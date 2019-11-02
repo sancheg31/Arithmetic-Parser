@@ -18,9 +18,8 @@ public:
     int columnCount() const;
     int column(const QString&) const;
 
-    OperationContainer& operator[](int i) { return (i) ? binaryOperations[i-1] : unaryOperations; }
-    const OperationContainer& operator[](int i) const { return (i) ? binaryOperations[i-1] : unaryOperations; }
+    OperationContainer& operator[](int i) { return operations[i]; }
+    const OperationContainer& operator[](int i) const { return operations[i]; }
 private:
-    QVector<OperationContainer> binaryOperations;
-    OperationContainer unaryOperations;
+    QVector<OperationContainer> operations;
 };

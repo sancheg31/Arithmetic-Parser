@@ -7,7 +7,7 @@ class IParserTemplateMethod
 {
 public:
     virtual ~IParserTemplateMethod();
-    QVariant parse(const QString&) const;
+    virtual QVariant parse(const QString&) const;
 
 protected:
     virtual QString setBrackets(const QString&) const = 0;
@@ -15,5 +15,4 @@ protected:
     virtual QVariant evalExpression(const QString &, int &) const = 0;
     virtual QVariant evalTerm(const QString &str, int &, int) const = 0;
     virtual QVariant evalFactor(const QString &str, int &) const = 0;
-
 };

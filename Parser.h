@@ -8,17 +8,20 @@ class Parser: public IParserTemplateMethod {
 public:
     Parser();
     Parser(const OperationTable&, const QSet<QString>&);
-
-    void setCellNames(const QSet<QString> cells) { cellNames = cells; }
-    void setTable(const OperationTable& t) { table = t; }
     virtual ~Parser() override;
 
+    virtual QVariant parse(const QString&) const override;
+    void setCellNames(const QSet<QString> cells) { cellNames = cells; }
+    void setTable(const OperationTable& t) { table = t; }
+
+
 protected:
-    virtual QString setBrackets(const QString&) const override;
-    virtual QString removeSpaces(const QString&) const override;
-    virtual QVariant evalExpression(const QString &, int &) const override;
-    virtual QVariant evalTerm(const QString &str, int &, int) const override;
-    virtual QVariant evalFactor(const QString &str, int &) const override;
+    Operation* currentOperation(const OperationContainer& cont, const QString&, int pos) const;
+    QString setBracketsForUnaryOperations(const QString&) const;
+    QString removeSpaces(const QString&) const;
+    QVariant evalExpression(const QString &, int &) const;
+    QVariant evalTerm(const QString &str, int &, int) const;
+    QVariant evalFactor(const QString &str, int &) const;
 
 private:
     OperationTable table;

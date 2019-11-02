@@ -6,26 +6,25 @@ OperationTable::OperationTable() {
 
 void OperationTable::add(Operation* op, size_t priority) {
     if (op->type() == Operation::OperationType::UnaryOperation) {
-        op = dynamic_cast<UnaryOperation*>(op);
-        unaryOperations.insert(op);
+        if (priority == 0) {
+            op = dynamic_cast<UnaryOperation*>(op);
+            operations[0].insert(op);
+        }
     } else {
         op = dynamic_cast<BinaryOperation*>(op);
-        if (priority <= binaryOperations.size()) {
-            binaryOperations[priority-1].insert(op);
+        if (priority < operations.size() && priority != 0) {
+            operations[priority].insert(op);
         }
-        else {
+        else if (priority != 0 && priority >= operations.size()) {
             OperationContainer cont;
             cont.insert(op);
-            binaryOperations.push_back(cont);
+            operations.push_back(cont);
         }
     }
 }
 
 int OperationTable::remove(const QString& str) {
-    int count = unaryOperations.remove(str);
-    if (count)
-        return count;
-    for (auto & x : binaryOperations) {
+    for (auto & x : operations) {
         int c = x.remove(str);
         if (c)
             return c;
@@ -34,27 +33,24 @@ int OperationTable::remove(const QString& str) {
 }
 
 bool OperationTable::contains(const QString& str) const {
-    if (unaryOperations.contains(str))
-        return true;
-    for (auto & x: binaryOperations)
+    for (auto & x: operations)
         if (x.contains(str))
             return true;
     return false;
 }
 
 bool OperationTable::isEmpty() const {
-    return unaryOperations.isEmpty() && binaryOperations.isEmpty();
+    return operations.isEmpty();
 }
 int OperationTable::columnCount() const {
-    return binaryOperations.size() + 1;
+    return operations.size();
 }
 
 int OperationTable::column(const QString& str) const {
-    if (unaryOperations.contains(str))
-        return 0;
-    for (int i = 0; i < binaryOperations.size(); ++i)
-        if (binaryOperations[i].contains(str))
-            return i+1;
+
+    for (int i = 0; i < operations.size(); ++i)
+        if (operations[i].contains(str))
+            return i;
     return -1;
 }
 
