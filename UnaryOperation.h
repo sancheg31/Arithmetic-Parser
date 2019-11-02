@@ -3,8 +3,13 @@
 #include "Operation.h"
 
 class UnaryOperation: public Operation {
+public:
+    virtual ~UnaryOperation() override;
+    virtual OperationType type() const override { return OperationType::UnaryOperation; }
+    virtual QVariant operator()(QVariant v) const { return op(v); }
+    virtual QString notation() const override { return opNotation; }
 
-    virtual ~UnaryOperation();
-    virtual QVariant operator()(QVariant) const = 0;
-    virtual OperationType type() const { return OperationType::UnaryOperation; }
+private:
+    std::function<QVariant(QVariant)> op;
+    QString opNotation;
 };

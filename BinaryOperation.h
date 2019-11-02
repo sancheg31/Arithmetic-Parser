@@ -6,7 +6,6 @@
 
 class BinaryOperation: public Operation {
 public:
-
     BinaryOperation(std::function<QVariant(QVariant, QVariant)>, const QString&);
     BinaryOperation(const BinaryOperation&);
     BinaryOperation& operator=(const BinaryOperation&);

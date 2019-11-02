@@ -17,11 +17,15 @@ public:
 
 protected:
     Operation* currentOperation(const OperationContainer& cont, const QString&, int pos) const;
+    QPair<Operation*, int> nearestOperation(const OperationContainer& cont, const QString&, int pos) const;
+    QVector<QPair<Operation*, int>> operationList(const OperationContainer& cont, const QString& str, int pos) const;
+    QVariant getFactor(const QString& str, int& pos) const;
+
     QString setBracketsForUnaryOperations(const QString&) const;
-    QString removeSpaces(const QString&) const;
-    QVariant evalExpression(const QString &, int &) const;
-    QVariant evalTerm(const QString &str, int &, int) const;
-    QVariant evalFactor(const QString &str, int &) const;
+    QString removeSpaces(const QString&) const override;
+    QVariant evalExpression(const QString &, int &) const override;
+    QVariant evalTerm(const QString &str, int &, int) const override;
+    QVariant evalFactor(const QString &str, int &) const override;
 
 private:
     OperationTable table;
