@@ -16,9 +16,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         BinaryOperation.cpp \
+        IParserTemplateMethod.cpp \
         Operation.cpp \
         OperationContainer.cpp \
         OperationTable.cpp \
+        Parser.cpp \
         UnaryOperation.cpp \
         main.cpp
 
@@ -29,7 +31,9 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     BinaryOperation.h \
+    IParserTemplateMethod.h \
     Operation.h \
     OperationContainer.h \
     OperationTable.h \
+    Parser.h \
     UnaryOperation.h
