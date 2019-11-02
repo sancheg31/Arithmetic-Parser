@@ -8,8 +8,7 @@ public:
 
     enum class OperationType {
         UnaryOperation,
-        BinaryOperation,
-        Function
+        BinaryOperation
     };
 
     virtual ~Operation();

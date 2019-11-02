@@ -18,13 +18,13 @@ public:
     OperationContainer(std::initializer_list<Operation*>& list);
 
     template <typename ... Tp>
-    OperationContainer(std::enable_if<std::conjunction_v<std::is_same_v<Tp, Operation*>...>, Tp> ... tp);
+    OperationContainer(std::enable_if<std::conjunction_v<std::is_base_of<Operation*, Tp>()...>, Tp> ... tp);
 
     iterator insert(Operation*);
-    int remove(Operation*);
-    iterator find(Operation*);
+    int remove(const QString&);
+    iterator find(const QString&);
 
-    bool contains(Operation*) const;
+    bool contains(const QString&) const;
     int size() const;
     bool isEmpty() const;
 

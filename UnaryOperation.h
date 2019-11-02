@@ -2,7 +2,7 @@
 
 #include "Operation.h"
 
-class UnaryOperation: Operation {
+class UnaryOperation: public Operation {
 
     virtual ~UnaryOperation();
     virtual QVariant operator()(QVariant) const = 0;
