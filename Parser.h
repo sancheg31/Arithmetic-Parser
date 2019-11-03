@@ -16,9 +16,8 @@ public:
 
 
 protected:
-    Operation* currentOperation(const OperationContainer& cont, const QString&, int pos) const;
-    QPair<Operation*, int> nearestOperation(const OperationContainer& cont, const QString&, int pos) const;
-    QVector<QPair<Operation*, int>> operationList(const OperationContainer& cont, const QString& str, int pos) const;
+    Operation* currentOperation(const QList<Operation*>&, const QString&, int pos) const;
+    QPair<Operation*, int> nearestOperation(const QList<Operation*>&, const QString&, int pos) const;
     QVariant getFactor(const QString& str, int& pos) const;
 
     QString setBracketsForUnaryOperations(const QString&) const;

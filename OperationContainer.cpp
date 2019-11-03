@@ -27,6 +27,14 @@ auto OperationContainer::find(const QString& str) -> iterator {
     return oper.find(str);
 }
 
+QList<Operation*> OperationContainer::toSortedList() const {
+    QList<Operation*> list;
+    for (auto & x: oper)
+        list.push_back(x);
+    std::sort(list.begin(), list.end());
+    return list;
+}
+
 int OperationContainer::remove(const QString& str) {
     return oper.remove(str);
 }

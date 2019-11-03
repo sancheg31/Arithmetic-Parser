@@ -1,25 +1,25 @@
+#include <QDebug>
+
 #include "OperationTable.h"
 
 OperationTable::OperationTable() {
-
+    operations.push_back(OperationContainer{});
 }
 
-void OperationTable::add(Operation* op, size_t priority) {
-    if (op->type() == Operation::OperationType::UnaryOperation) {
-        if (priority == 0) {
-            op = dynamic_cast<UnaryOperation*>(op);
-            operations[0].insert(op);
+void OperationTable::add(Operation* op, int priority) {
+
+    if (priority == 0 && op->type() == Operation::OperationType::UnaryOperation) {
+        operations[0].insert(dynamic_cast<UnaryOperation*>(op));
+    }
+    else if (op->type() == Operation::OperationType::BinaryOperation) {
+        if (priority > 0 && priority < operations.size()) {
+            operations[priority].insert(dynamic_cast<BinaryOperation*>(op));
         }
-    } else {
-        op = dynamic_cast<BinaryOperation*>(op);
-        if (priority < operations.size() && priority != 0) {
-            operations[priority].insert(op);
+        else if (priority >= operations.size()) {
+            operations.push_back(OperationContainer{});
+            operations[operations.size()-1].insert(dynamic_cast<BinaryOperation*>(op));
         }
-        else if (priority != 0 && priority >= operations.size()) {
-            OperationContainer cont;
-            cont.insert(op);
-            operations.push_back(cont);
-        }
+
     }
 }
 
@@ -47,7 +47,6 @@ int OperationTable::columnCount() const {
 }
 
 int OperationTable::column(const QString& str) const {
-
     for (int i = 0; i < operations.size(); ++i)
         if (operations[i].contains(str))
             return i;

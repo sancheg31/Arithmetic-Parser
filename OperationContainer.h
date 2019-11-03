@@ -24,6 +24,7 @@ public:
     int remove(const QString&);
     iterator find(const QString&);
 
+    QList<Operation*> toSortedList() const;
     bool contains(const QString&) const;
     int size() const;
     bool isEmpty() const;

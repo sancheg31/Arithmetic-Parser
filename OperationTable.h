@@ -10,7 +10,7 @@ class OperationTable {
 public:
     OperationTable();
 
-    void add(Operation*, size_t = 0);
+    void add(Operation*, int);
     int remove(const QString&);
 
     bool contains(const QString&) const;
