@@ -13,20 +13,44 @@ int main(int argc, char *argv[])
     QCoreApplication a(argc, argv);
     OperationTable table;
     table.add(new UnaryOperation([](QVariant v) -> QVariant { return v; }, "+"), 0);
-    table.add(new UnaryOperation([](QVariant v) -> QVariant { return -v.toDouble(); }, "-"), 0);
-    table.add(new UnaryOperation([](QVariant v) -> QVariant { return v.toDouble()+1; }, "++"), 0);
-    table.add(new UnaryOperation([](QVariant v) -> QVariant { return v.toDouble()-1; }, "--"), 0);
-    //table.add(new UnaryOperation([](QVariant v) -> QVariant { return v.toDouble()+2; }, "+++"), 0);
-    //table.add(new UnaryOperation([](QVariant v) -> QVariant { return v.toDouble()-2; }, "---"), 0);
-    table.add(new BinaryOperation([](QVariant v1, QVariant v2) -> QVariant { return v1.toDouble() * v2.toDouble(); }, "*"), 2);
-    table.add(new BinaryOperation([](QVariant v1, QVariant v2) -> QVariant { return v1.toDouble() / v2.toDouble(); }, "/"), 2);
-    table.add(new BinaryOperation([](QVariant v1, QVariant v2) -> QVariant { return v1.toDouble() + v2.toDouble(); }, "+"), 3);
-    table.add(new BinaryOperation([](QVariant v1, QVariant v2) -> QVariant { return v1.toDouble() - v2.toDouble(); }, "-"), 3);
-    table.add(new BinaryOperation([](QVariant v1, QVariant v2) -> QVariant { return v1.toDouble() || v2.toDouble(); }, "||"), 4);
-    table.add(new BinaryOperation([](QVariant v1, QVariant v2) -> QVariant { return v1.toDouble() && v2.toDouble(); }, "&&"), 4);
-    table.add(new BinaryOperation([](QVariant v1, QVariant v2) -> QVariant { return qPow(v1.toDouble(), v2.toDouble()); }, "^"), 1);
-
-    QString str = "=((1 && 2^5 || 3^8))+(2^5)";
+    table.add(new UnaryOperation([](QVariant v) -> QVariant {
+                  return (v.type() == QVariant::Invalid) ? v : -v.toDouble();
+              }, "-"), 0);
+    table.add(new UnaryOperation([](QVariant v) -> QVariant {
+                  return (v.type() == QVariant::Invalid) ? v : v.toDouble()+1;
+              }, "++"), 0);
+    table.add(new UnaryOperation([](QVariant v) -> QVariant {
+                  return (v.type() == QVariant::Invalid) ? v : v.toDouble()-1;
+              }, "--"), 0);
+    table.add(new BinaryOperation([](QVariant v1, QVariant v2) -> QVariant {
+                  return (v1.type() == QVariant::Invalid || v2.type() == QVariant::Invalid) ?
+                    QVariant::Invalid : qPow(v1.toDouble(), v2.toDouble());
+              }, "^"), 1);
+    table.add(new BinaryOperation([](QVariant v1, QVariant v2) -> QVariant {
+                  return (v1.type() == QVariant::Invalid || v2.type() == QVariant::Invalid) ?
+                    QVariant::Invalid : v1.toDouble() * v2.toDouble();
+              }, "*"), 2);
+    table.add(new BinaryOperation([](QVariant v1, QVariant v2) -> QVariant {
+                  return (v1.type() == QVariant::Invalid || v2.type() == QVariant::Invalid) ?
+                    QVariant::Invalid : v1.toDouble() / v2.toDouble();
+              }, "/"), 2);
+    table.add(new BinaryOperation([](QVariant v1, QVariant v2) -> QVariant {
+                  return (v1.type() == QVariant::Invalid || v2.type() == QVariant::Invalid) ?
+                    QVariant::Invalid : v1.toDouble() + v2.toDouble();
+              }, "+"), 3);
+    table.add(new BinaryOperation([](QVariant v1, QVariant v2) -> QVariant {
+                  return (v1.type() == QVariant::Invalid || v2.type() == QVariant::Invalid) ?
+                    QVariant::Invalid : v1.toDouble() - v2.toDouble();
+              }, "-"), 3);
+    table.add(new BinaryOperation([](QVariant v1, QVariant v2) -> QVariant {
+                  return (v1.type() == QVariant::Invalid || v2.type() == QVariant::Invalid) ?
+                    QVariant::Invalid : v1.toDouble() || v2.toDouble();
+              }, "||"), 4);
+    table.add(new BinaryOperation([](QVariant v1, QVariant v2) -> QVariant {
+                  return (v1.type() == QVariant::Invalid || v2.type() == QVariant::Invalid) ?
+                        QVariant::Invalid : v1.toDouble() && v2.toDouble();
+              }, "&&"), 4);
+    QString str = "=(++5)-((--6))";
     Parser parser(table, QSet<QString>{});
     qDebug() << "result is: " << parser.parse(str).toDouble();
     return a.exec();
