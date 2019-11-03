@@ -21,10 +21,10 @@ int main(int argc, char *argv[])
     table.add(new BinaryOperation([](QVariant v1, QVariant v2) -> QVariant { return v1.toDouble() / v2.toDouble(); }, "/"), 1);
     table.add(new BinaryOperation([](QVariant v1, QVariant v2) -> QVariant { return v1.toDouble() + v2.toDouble(); }, "+"), 2);
     table.add(new BinaryOperation([](QVariant v1, QVariant v2) -> QVariant { return v1.toDouble() - v2.toDouble(); }, "-"), 2);
-    //table.add(new BinaryOperation([](QVariant v1, QVariant v2) -> QVariant { return v1.toDouble() || v2.toDouble(); }, "||"), 3);
-    //table.add(new BinaryOperation([](QVariant v1, QVariant v2) -> QVariant { return v1.toDouble() && v2.toDouble(); }, "&&"), 3);
+    table.add(new BinaryOperation([](QVariant v1, QVariant v2) -> QVariant { return v1.toDouble() || v2.toDouble(); }, "||"), 3);
+    table.add(new BinaryOperation([](QVariant v1, QVariant v2) -> QVariant { return v1.toDouble() && v2.toDouble(); }, "&&"), 3);
 
-    QString str = "= (3+2+4+8+(3*(8/--2)))";
+    QString str = "=1 && 2 || 3";
     Parser parser(table, QSet<QString>{});
     qDebug() << "result is: " << parser.parse(str).toDouble();
     return a.exec();
