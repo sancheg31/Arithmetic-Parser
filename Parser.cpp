@@ -126,7 +126,7 @@ QVariant Parser::evalExpression(const QString& str, int & pos) const {
         qDebug() << "Parser::evalExpression(): second term is: " << term.toString();
         result = curOperation->operator()(result, term);
     }
-    return result;
+    return (result.type() != QVariant::Invalid) ? result.toDouble() : result;
 }
 
 QVariant Parser::evalTerm(const QString& str, int & pos, int priority) const {
@@ -144,7 +144,7 @@ QVariant Parser::evalTerm(const QString& str, int & pos, int priority) const {
         qDebug() << "Parser::evalTerm(): second term is: " << term.toString();
         result = curOperation->operator()(result, term);
     }
-    return result;
+    return (result.type() != QVariant::Invalid) ? result.toDouble() : result;
 }
 
 QVariant Parser::evalFactor(const QString& str, int& pos) const {
@@ -169,7 +169,7 @@ QVariant Parser::evalFactor(const QString& str, int& pos) const {
             result = curOperation->operator()(result);
         }
     }
-    return result;
+    return (result.type() != QVariant::Invalid) ? result.toDouble() : result;
 }
 /*
 QVariant evalExpression(const QString &str, int &pos) {
