@@ -1,13 +1,14 @@
 #pragma once
 
 #include <QSet>
+
 #include "OperationTable.h"
 #include "IParserTemplateMethod.h"
 
 class Parser: public IParserTemplateMethod {
 public:
     Parser();
-    Parser(const OperationTable& table, const QSet<QString>& cellNames);
+    Parser(const OperationTable& table, const QSet<QString>& functions);
     virtual ~Parser() override;
 
     virtual QVariant parse(const QString&) const override;
