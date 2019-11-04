@@ -7,27 +7,23 @@
 class Parser: public IParserTemplateMethod {
 public:
     Parser();
-    Parser(const OperationTable&, const QSet<QString>&);
+    Parser(const OperationTable& table, const QSet<QString>& cellNames);
     virtual ~Parser() override;
 
     virtual QVariant parse(const QString&) const override;
     void setCellNames(const QSet<QString> cells) { cellNames = cells; }
     void setTable(const OperationTable& t) { table = t; }
 
-
 protected:
-    Operation* currentOperation(const QList<Operation*>&, const QString&, int pos) const;
-    QPair<Operation*, int> nearestOperation(const QList<Operation*>&, const QString&, int pos) const;
+    QString removeSpaces(const QString& str) const override;
+    QVariant evalExpression(const QString & str, int & pos) const override;
+    QVariant evalTerm(const QString &str, int & pos, int priority) const override;
+    QVariant evalFactor(const QString &str, int &pos) const override;
+
     QVariant getFactor(const QString& str, int& pos) const;
-
-    QString setBracketsForUnaryOperations(const QString&) const;
-    QString removeSpaces(const QString&) const override;
-    QVariant evalExpression(const QString &, int &) const override;
-    QVariant evalTerm(const QString &str, int &, int) const override;
-    QVariant evalFactor(const QString &str, int &) const override;
-
 private:
     OperationTable table;
     QSet<QString> cellNames;
+
 };
 

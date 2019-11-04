@@ -10,7 +10,7 @@ class OperationTable {
 public:
     OperationTable();
 
-    void add(Operation*, int);
+    void add(IOperation*, int);
     int remove(const QString&);
 
     bool contains(const QString&) const;
@@ -18,8 +18,8 @@ public:
     int columnCount() const;
     int column(const QString&) const;
 
-    Operation* nearest(int priority);
-    Operation* current(int priority);
+    QPair<IOperation*, int> nearestOperation(const QString&, int pos, int priority) const;
+    IOperation* currentOperation(const QString&, int pos, int priority) const;
 
     OperationContainer& operator[](int i) { return operations[i]; }
     const OperationContainer& operator[](int i) const { return operations[i]; }

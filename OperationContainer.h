@@ -5,26 +5,23 @@
 #include <initializer_list>
 #include <type_traits>
 
-#include "Operation.h"
+#include "IOperation.h"
 
 class OperationContainer {
 public:
 
-    using iterator = QHash<QString, Operation*>::iterator;
-    using const_iterator = QHash<QString, Operation*>::const_iterator;
+    using iterator = QHash<QString, IOperation*>::iterator;
+    using const_iterator = QHash<QString, IOperation*>::const_iterator;
 
     OperationContainer();
     OperationContainer(const OperationContainer&);
-    OperationContainer(std::initializer_list<Operation*>& list);
+    OperationContainer(std::initializer_list<IOperation*>& list);
 
-    template <typename ... Tp>
-    OperationContainer(std::enable_if<std::conjunction_v<std::is_base_of<Operation*, Tp>()...>, Tp> ... tp);
-
-    iterator insert(Operation*);
+    iterator insert(IOperation*);
     int remove(const QString&);
     iterator find(const QString&);
 
-    QList<Operation*> toSortedList() const;
+    QList<IOperation*> toSortedList() const;
     bool contains(const QString&) const;
     int size() const;
     bool isEmpty() const;
@@ -38,5 +35,5 @@ public:
     const_iterator cend() const { return oper.cend(); }
 
 private:
-    QHash<QString, Operation*> oper;
+    QHash<QString, IOperation*> oper;
 };

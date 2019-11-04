@@ -12,8 +12,8 @@ QVariant Parser::parse(const QString & str) const {
     QString temp = str;
     temp = temp.mid(1);
     qDebug() << "Parser::parse: removed \'=\' " << temp;
-    temp.push_front('(');
-    temp.push_back(')');
+    temp.push_front("((");
+    temp.push_back("))");
     qDebug() << "Parser::parse: added brackets " << temp;
     temp.append(QChar::Null);
     temp = removeSpaces(temp);
@@ -22,28 +22,6 @@ QVariant Parser::parse(const QString & str) const {
     qDebug() << "\n";
     QVariant result = evalExpression(temp, pos);
     return result;
-}
-
-Operation* Parser::currentOperation(const QList<Operation*> & list, const QString & str, int pos) const {
-    for (auto it = list.rbegin(); it != list.rend(); ++it) {
-        int curIndex = str.indexOf((*it)->notation(), pos);
-        if (curIndex == pos)
-            return (*it);
-    }
-    return nullptr;
-}
-
-QPair<Operation*, int> Parser::nearestOperation(const QList<Operation*> & list, const QString & str, int pos) const {
-    int minIndex = str.size();
-    Operation* result = nullptr;
-    for (int i = list.size()-1; i > -1; --i) {
-        int curIndex = str.indexOf(list[i]->notation(), pos);
-        if (curIndex < minIndex && curIndex != -1) {
-            minIndex = curIndex;
-            result = list[i];
-        }
-    }
-    return QPair{result, minIndex};
 }
 
 QVariant Parser::getFactor(const QString &str, int &pos) const {
@@ -83,7 +61,7 @@ QString Parser::removeSpaces(const QString& str) const {
 QVariant Parser::evalExpression(const QString& str, int & pos) const {
     QVariant result = evalTerm(str, pos, table.columnCount()-2);
     while (str[pos] != QChar::Null) {
-        BinaryOperation* curOperation = dynamic_cast<BinaryOperation*>(currentOperation(table[table.columnCount()-1].toSortedList(), str, pos));
+        BinaryOperation* curOperation = dynamic_cast<BinaryOperation*>(table.currentOperation(str, pos, table.columnCount()-1));
         if (curOperation == nullptr)
             return result;
         qDebug() << "Parser::evalExpression(): first term is: " << result.toString();
@@ -99,7 +77,8 @@ QVariant Parser::evalExpression(const QString& str, int & pos) const {
 QVariant Parser::evalTerm(const QString& str, int & pos, int priority) const {
     QVariant result = (priority) ? evalTerm(str, pos, priority-1) : evalFactor(str, pos);
     while (str[pos] != QChar::Null) {
-        BinaryOperation* curOperation = dynamic_cast<BinaryOperation*>(currentOperation(table[priority].toSortedList(), str, pos));
+        BinaryOperation* curOperation = dynamic_cast<BinaryOperation*>(
+                    table.currentOperation(str, pos, priority));
         if (curOperation == nullptr)
             return result;
         pos += curOperation->notation().size();
@@ -121,24 +100,25 @@ QVariant Parser::evalFactor(const QString& str, int& pos) const {
         result = evalExpression(str, pos);
         if (str[pos] != ')')
             result = QVariant{};
-        else
+        else {
             qDebug() << "Parser::evalFactor(): close bracket found on " << pos << " position";
-        ++pos;
+            ++pos;
+        }
     } else {
 
-        curOperation = dynamic_cast<UnaryOperation*>(currentOperation(table[0].toSortedList(), str, pos));
+        curOperation = dynamic_cast<UnaryOperation*>(table.currentOperation(str, pos, 0));
         if (curOperation) {
             pos += curOperation->notation().size();
             qDebug() << "Parser::evalFactor(): current unary operation is: " << curOperation->notation();
         }
         if (str[pos] == '(') {
-            qDebug() << "Parser::evalFactor(): open bracket found on " << pos << " position";
+            qDebug() << "Parser::evalFactor(): open bracket found on 2" << pos << " position";
             ++pos;
             result = evalExpression(str, pos);
             if (str[pos] != ')')
                 result = QVariant{};
             else
-                qDebug() << "Parser::evalFactor(): close bracket found on " << pos << " position";
+                qDebug() << "Parser::evalFactor(): close bracket found on 2" << pos << " position";
             ++pos;
         } else {
             result = getFactor(str, pos);

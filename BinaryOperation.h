@@ -2,9 +2,9 @@
 
 #include <functional>
 
-#include "Operation.h"
+#include "IOperation.h"
 
-class BinaryOperation: public Operation {
+class BinaryOperation: public IOperation {
 public:
     BinaryOperation(std::function<QVariant(QVariant, QVariant)>, const QString&);
     BinaryOperation(const BinaryOperation&);

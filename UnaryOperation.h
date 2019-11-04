@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Operation.h"
+#include "IOperation.h"
 
-class UnaryOperation: public Operation {
+class UnaryOperation: public IOperation {
 public:
     UnaryOperation(std::function<QVariant(QVariant)>, const QString&);
     UnaryOperation(const UnaryOperation&);

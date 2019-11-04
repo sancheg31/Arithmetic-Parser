@@ -9,17 +9,12 @@ OperationContainer::OperationContainer(const OperationContainer& operations) {
         oper.insert(it->notation(), it);
 }
 
-OperationContainer::OperationContainer(std::initializer_list<Operation*> & list) {
+OperationContainer::OperationContainer(std::initializer_list<IOperation*> & list) {
     for (const auto & it: list)
         oper.insert(it->notation(), it);
 }
 
-template <typename ... Tp>
-OperationContainer::OperationContainer(std::enable_if<std::conjunction_v<std::is_base_of<Operation*, Tp>()...>, Tp> ... tp) {
-    ((insert(tp->operation(), tp)), ...);
-}
-
-auto OperationContainer::insert(Operation* op) -> iterator {
+auto OperationContainer::insert(IOperation* op) -> iterator {
     return oper.insert(op->notation(), op);
 }
 
@@ -27,12 +22,11 @@ auto OperationContainer::find(const QString& str) -> iterator {
     return oper.find(str);
 }
 
-#include <QDebug>
-QList<Operation*> OperationContainer::toSortedList() const {
-    QList<Operation*> list;
+QList<IOperation*> OperationContainer::toSortedList() const {
+    QList<IOperation*> list;
     for (auto & x: oper)
         list.push_back(x);
-    std::sort(list.begin(), list.end(), [](Operation* op1, Operation* op2) -> bool {
+    std::sort(list.begin(), list.end(), [](IOperation* op1, IOperation* op2) -> bool {
             return op1->notation().size() < op2->notation().size();
         });
     return list;

@@ -3,7 +3,7 @@
 #include <QtMath>
 
 #include "Parser.h"
-#include "Operation.h"
+#include "IOperation.h"
 #include "UnaryOperation.h"
 #include "OperationContainer.h"
 #include "OperationTable.h"
@@ -26,33 +26,34 @@ int main(int argc, char *argv[])
               }, "--"), 0);
     table.add(new BinaryOperation([](QVariant v1, QVariant v2) -> QVariant {
                   return (v1.type() == QVariant::Invalid || v2.type() == QVariant::Invalid) ?
-                    QVariant::Invalid : qPow(v1.toDouble(), v2.toDouble());
+                  QVariant{} : qPow(v1.toDouble(), v2.toDouble());
               }, "^"), 1);
     table.add(new BinaryOperation([](QVariant v1, QVariant v2) -> QVariant {
                   return (v1.type() == QVariant::Invalid || v2.type() == QVariant::Invalid) ?
-                    QVariant::Invalid : v1.toDouble() * v2.toDouble();
+                  QVariant{} : v1.toDouble() * v2.toDouble();
               }, "*"), 2);
     table.add(new BinaryOperation([](QVariant v1, QVariant v2) -> QVariant {
                   return (v1.type() == QVariant::Invalid || v2.type() == QVariant::Invalid) ?
-                    QVariant::Invalid : v1.toDouble() / v2.toDouble();
+                    QVariant{} : v1.toDouble() / v2.toDouble();
               }, "/"), 2);
     table.add(new BinaryOperation([](QVariant v1, QVariant v2) -> QVariant {
                   return (v1.type() == QVariant::Invalid || v2.type() == QVariant::Invalid) ?
-                    QVariant::Invalid : v1.toDouble() + v2.toDouble();
+                  QVariant{} : v1.toDouble() + v2.toDouble();
               }, "+"), 3);
     table.add(new BinaryOperation([](QVariant v1, QVariant v2) -> QVariant {
                   return (v1.type() == QVariant::Invalid || v2.type() == QVariant::Invalid) ?
-                    QVariant::Invalid : v1.toDouble() - v2.toDouble();
+                    QVariant{} : v1.toDouble() - v2.toDouble();
               }, "-"), 3);
     table.add(new BinaryOperation([](QVariant v1, QVariant v2) -> QVariant {
                   return (v1.type() == QVariant::Invalid || v2.type() == QVariant::Invalid) ?
-                    QVariant::Invalid : v1.toDouble() || v2.toDouble();
+                    QVariant{} : v1.toDouble() || v2.toDouble();
               }, "||"), 4);
     table.add(new BinaryOperation([](QVariant v1, QVariant v2) -> QVariant {
                   return (v1.type() == QVariant::Invalid || v2.type() == QVariant::Invalid) ?
-                        QVariant::Invalid : v1.toDouble() && v2.toDouble();
+                    QVariant{} : v1.toDouble() && v2.toDouble();
               }, "&&"), 4);
-    QString str = "=(--((((5)))))*7-++7*4";
+
+    QString str = "=++(++7)+(--6)*++12)";
     Parser parser(table, QSet<QString>{});
     QVariant value = parser.parse(str);
     qDebug() << "result is: " << ((value.type() == QVariant::Invalid) ? QString("####") : value.toString());
