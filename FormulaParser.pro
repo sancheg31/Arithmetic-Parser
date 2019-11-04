@@ -1,4 +1,4 @@
-QT -= gui
+QT += gui widgets core
 
 CONFIG += c++17 console
 CONFIG -= app_bundle
@@ -21,6 +21,8 @@ SOURCES += \
         OperationContainer.cpp \
         OperationTable.cpp \
         Parser.cpp \
+        ParserTester.cpp \
+        TesterWindow.cpp \
         UnaryOperation.cpp \
         main.cpp
 
@@ -36,4 +38,9 @@ HEADERS += \
     OperationContainer.h \
     OperationTable.h \
     Parser.h \
+    ParserTester.h \
+    TesterWindow.h \
     UnaryOperation.h
+
+FORMS += \
+    TesterWindow.ui

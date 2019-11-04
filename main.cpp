@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
                   return (v1.type() == QVariant::Invalid || v2.type() == QVariant::Invalid) ?
                         QVariant::Invalid : v1.toDouble() && v2.toDouble();
               }, "&&"), 4);
-    QString str = "=(++5)-((--6))";
+    QString str = "=++5---6";
     Parser parser(table, QSet<QString>{});
     qDebug() << "result is: " << parser.parse(str).toDouble();
     return a.exec();
