@@ -32,6 +32,9 @@ int OperationTable::remove(const QString& str) {
     return 0;
 }
 
+
+
+
 bool OperationTable::contains(const QString& str) const {
     for (auto & x: operations)
         if (x.contains(str))

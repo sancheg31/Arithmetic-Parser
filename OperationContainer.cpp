@@ -27,11 +27,14 @@ auto OperationContainer::find(const QString& str) -> iterator {
     return oper.find(str);
 }
 
+#include <QDebug>
 QList<Operation*> OperationContainer::toSortedList() const {
     QList<Operation*> list;
     for (auto & x: oper)
         list.push_back(x);
-    std::sort(list.begin(), list.end());
+    std::sort(list.begin(), list.end(), [](Operation* op1, Operation* op2) -> bool {
+            return op1->notation().size() < op2->notation().size();
+        });
     return list;
 }
 

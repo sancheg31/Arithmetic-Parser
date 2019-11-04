@@ -18,6 +18,9 @@ public:
     int columnCount() const;
     int column(const QString&) const;
 
+    Operation* nearest(int priority);
+    Operation* current(int priority);
+
     OperationContainer& operator[](int i) { return operations[i]; }
     const OperationContainer& operator[](int i) const { return operations[i]; }
 private:

@@ -74,10 +74,6 @@ QVariant Parser::getFactor(const QString &str, int &pos) const {
     return result;
 }
 
-bool isValidSym(QCharRef ref) {
-    return ref.isLetterOrNumber() || (ref == '(') || (ref == ' ');
-}
-
 QString Parser::removeSpaces(const QString& str) const {
     QString temp = str;
     temp.replace(" ", "");
@@ -94,12 +90,10 @@ QVariant Parser::evalExpression(const QString& str, int & pos) const {
         qDebug() << "Parser::evalExpression(): current operation is: " << curOperation->notation();
         pos += curOperation->notation().size();
         QVariant term = evalTerm(str, pos, table.columnCount()-2);
-        if (result.type() == QVariant::Invalid || term.type() == QVariant::Invalid)
-            return QVariant{};
         qDebug() << "Parser::evalExpression(): second term is: " << term.toString();
         result = curOperation->operator()(result, term);
     }
-    return (result.type() != QVariant::Invalid) ? result.toDouble() : result;
+    return result;
 }
 
 QVariant Parser::evalTerm(const QString& str, int & pos, int priority) const {
@@ -110,17 +104,17 @@ QVariant Parser::evalTerm(const QString& str, int & pos, int priority) const {
             return result;
         pos += curOperation->notation().size();
         qDebug() << "Parser::evalTerm(): first term is: " << result.toString();
-        qDebug() << "Parser::evalTerm(): current operation is: " << curOperation->notation();
+        qDebug() << "Parser::evalTerm(): current operation is: " << curOperation->notation() << "on pr " << priority;
         QVariant term = (priority) ? evalTerm(str, pos, priority-1) : evalFactor(str, pos);
         qDebug() << "Parser::evalTerm(): second term is: " << term.toString();
         result = curOperation->operator()(result, term);
     }
-    return (result.type() != QVariant::Invalid) ? result.toDouble() : result;
+    return result;
 }
 
 QVariant Parser::evalFactor(const QString& str, int& pos) const {
     QVariant result;
-
+    UnaryOperation* curOperation = nullptr;
     if (str[pos] == '(') {
         qDebug() << "Parser::evalFactor(): open bracket found on " << pos << " position";
         ++pos;
@@ -131,11 +125,24 @@ QVariant Parser::evalFactor(const QString& str, int& pos) const {
             qDebug() << "Parser::evalFactor(): close bracket found on " << pos << " position";
         ++pos;
     } else {
-        UnaryOperation* curOperation = dynamic_cast<UnaryOperation*>(currentOperation(table[0].toSortedList(), str, pos));
+
+        curOperation = dynamic_cast<UnaryOperation*>(currentOperation(table[0].toSortedList(), str, pos));
         if (curOperation) {
             pos += curOperation->notation().size();
+            qDebug() << "Parser::evalFactor(): current unary operation is: " << curOperation->notation();
         }
-        result = getFactor(str, pos);
+        if (str[pos] == '(') {
+            qDebug() << "Parser::evalFactor(): open bracket found on " << pos << " position";
+            ++pos;
+            result = evalExpression(str, pos);
+            if (str[pos] != ')')
+                result = QVariant{};
+            else
+                qDebug() << "Parser::evalFactor(): close bracket found on " << pos << " position";
+            ++pos;
+        } else {
+            result = getFactor(str, pos);
+        }
         if (curOperation) {
             result = curOperation->operator()(result);
         }

@@ -21,7 +21,6 @@ SOURCES += \
         OperationContainer.cpp \
         OperationTable.cpp \
         Parser.cpp \
-        ParserTester.cpp \
         TesterWindow.cpp \
         UnaryOperation.cpp \
         main.cpp
@@ -38,7 +37,6 @@ HEADERS += \
     OperationContainer.h \
     OperationTable.h \
     Parser.h \
-    ParserTester.h \
     TesterWindow.h \
     UnaryOperation.h
 

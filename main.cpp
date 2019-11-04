@@ -12,7 +12,9 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
     OperationTable table;
-    table.add(new UnaryOperation([](QVariant v) -> QVariant { return v; }, "+"), 0);
+    table.add(new UnaryOperation([](QVariant v) -> QVariant {
+                  return (v.type() == QVariant::Invalid) ? v : v.toDouble();
+              }, "+"), 0);
     table.add(new UnaryOperation([](QVariant v) -> QVariant {
                   return (v.type() == QVariant::Invalid) ? v : -v.toDouble();
               }, "-"), 0);
@@ -50,8 +52,15 @@ int main(int argc, char *argv[])
                   return (v1.type() == QVariant::Invalid || v2.type() == QVariant::Invalid) ?
                         QVariant::Invalid : v1.toDouble() && v2.toDouble();
               }, "&&"), 4);
-    QString str = "=++5---6";
+    QString str = "=(--((((5)))))*7-++7*4";
     Parser parser(table, QSet<QString>{});
-    qDebug() << "result is: " << parser.parse(str).toDouble();
+    QVariant value = parser.parse(str);
+    qDebug() << "result is: " << ((value.type() == QVariant::Invalid) ? QString("####") : value.toString());
     return a.exec();
+
+
 }
+
+
+
+

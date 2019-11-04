@@ -1,5 +1,4 @@
-#ifndef TESTERWINDOW_H
-#define TESTERWINDOW_H
+#pragma once
 
 #include <QMainWindow>
 
@@ -7,8 +6,7 @@ namespace Ui {
 class TesterWindow;
 }
 
-class TesterWindow : public QMainWindow
-{
+class TesterWindow : public QMainWindow {
     Q_OBJECT
 
 public:
@@ -18,5 +16,3 @@ public:
 private:
     Ui::TesterWindow *ui;
 };
-
-#endif // TESTERWINDOW_H
