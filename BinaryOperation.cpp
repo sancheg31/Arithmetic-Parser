@@ -1,19 +1,16 @@
 #include "BinaryOperation.h"
 
 
-BinaryOperation::BinaryOperation(std::function<QVariant (QVariant, QVariant)> operation, const QString & str):
-    op(operation), opNotation(str)
-{
+BinaryOperation::BinaryOperation(binary_function_type op, const QString & str):
+    IOperation(str, OperationType::BinaryOperation), operation(op) { }
 
-}
-
-BinaryOperation::BinaryOperation(const BinaryOperation & ob): op(ob.op), opNotation(ob.opNotation) {
-
+BinaryOperation::BinaryOperation(const BinaryOperation & ob): IOperation(ob.operNotation, ob.operType) {
+    operation = ob.operation;
 }
 
 BinaryOperation &BinaryOperation::operator=(const BinaryOperation & ob) {
-    op = ob.op;
-    opNotation = ob.opNotation;
+    operation = ob.operation;
+    operNotation = ob.operNotation;
     return *this;
 }
 

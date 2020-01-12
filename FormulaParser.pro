@@ -19,6 +19,7 @@ SOURCES += \
         IOperation.cpp \
         IParserTemplateMethod.cpp \
         OperationContainer.cpp \
+        OperationProxy.cpp \
         OperationTable.cpp \
         Parser.cpp \
         TesterWindow.cpp \
@@ -35,6 +36,7 @@ HEADERS += \
     IOperation.h \
     IParserTemplateMethod.h \
     OperationContainer.h \
+    OperationProxy.h \
     OperationTable.h \
     Parser.h \
     TesterWindow.h \
