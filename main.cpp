@@ -1,4 +1,4 @@
-#include <QCoreApplication>
+#include <QApplication>
 #include <QDebug>
 #include <QtMath>
 
@@ -6,6 +6,8 @@
 #include "OperationFactory.h"
 #include "OperationContainer.h"
 #include "OperationPrecedenceTable.h"
+
+#include "TesterWindow.h"
 
 OperationContainer createUnaryOperationsList(OperationFactory* factory) {
     OperationContainer result;
@@ -51,14 +53,14 @@ OperationPrecedenceTable createOperationTable() {
 
 int main(int argc, char *argv[])
 {
-    QCoreApplication a(argc, argv);
-
+    QApplication a(argc, argv);
     QString str = "=(++(++7)+(--6)*++12)";
     auto table = createOperationTable();
     Parser parser(table, QSet<QString>{});
     QVariant value = parser.parse(str);
+    TesterWindow* window = new TesterWindow(new Parser(table, QSet<QString>{}));
+    window->show();
     qDebug() << "result is: " << ((value.type() == QVariant::Invalid) ? QString("####") : value.toString());
-
     return a.exec();
 }
 

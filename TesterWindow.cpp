@@ -11,10 +11,13 @@ TesterWindow::~TesterWindow() {
     delete ui;
 }
 
-
+#include <QDebug>
 void TesterWindow::parseFormClicked() {
     QString str = ui->form->toPlainText();
     QVariant result = parser->parse(str);
-    if (result.isValid())
+    if (result.isValid()) {
         ui->result->display(result.toString());
+        qDebug() << result.toString();
+    }
+    qDebug() << "Something went wrong";
 }
