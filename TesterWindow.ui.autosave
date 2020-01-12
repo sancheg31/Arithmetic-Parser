@@ -53,7 +53,17 @@
       </layout>
      </item>
      <item>
-      <widget class="QLCDNumber" name="result"/>
+      <widget class="QLCDNumber" name="result">
+       <property name="smallDecimalPoint">
+        <bool>true</bool>
+       </property>
+       <property name="digitCount">
+        <number>16</number>
+       </property>
+       <property name="segmentStyle">
+        <enum>QLCDNumber::Flat</enum>
+       </property>
+      </widget>
      </item>
     </layout>
    </widget>
