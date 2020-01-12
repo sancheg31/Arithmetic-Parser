@@ -5,35 +5,44 @@
 #include <initializer_list>
 #include <type_traits>
 
-#include "Operation.h"
+#include "OperationProxy.h"
 
-class OperationContainer {
+class OperationContainer
+{
 public:
 
-    using iterator = QHash<QString, Operation*>::iterator;
-    using const_iterator = QHash<QString, Operation*>::const_iterator;
+    using iterator = QHash<QString, OperationProxy*>::iterator;
+    using const_iterator = QHash<QString, OperationProxy*>::const_iterator;
 
     OperationContainer();
     OperationContainer(const OperationContainer&);
-    OperationContainer(std::initializer_list<Operation*>& list);
+    OperationContainer(std::initializer_list<OperationProxy*>& list);
 
-    iterator insert(Operation*);
+    OperationContainer& operator=(const OperationContainer&);
+
+    iterator insert(OperationProxy*);
     int remove(const QString&);
     iterator find(const QString&);
 
-    QList<Operation*> toSortedList() const;
+    QList<OperationProxy*> toSortedList() const;
     bool contains(const QString&) const;
     int size() const;
     bool isEmpty() const;
 
-    iterator begin() { return oper.begin(); }
-    const_iterator begin() const { return oper.begin(); }
-    iterator end() { return oper.end(); }
-    const_iterator end() const { return oper.end(); }
+    const OperationProxy* operator[](const QString&) const;
+    OperationProxy* operator[](const QString&);
 
-    const_iterator cbegin() const { return oper.cbegin(); }
-    const_iterator cend() const { return oper.cend(); }
+    iterator begin();
+    const_iterator begin() const;
+    iterator end();
+    const_iterator end() const;
+
+    const_iterator cbegin() const;
+    const_iterator cend() const;
 
 private:
-    QHash<QString, Operation*> oper;
+    QList<OperationProxy*> createList() const;
+    QHash<QString, OperationProxy*> oper;
 };
+
+

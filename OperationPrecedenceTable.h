@@ -25,6 +25,7 @@ public:
 
     OperationContainer& operator[](int i) { return operations[i]; }
     const OperationContainer& operator[](int i) const { return operations[i]; }
+
 private:
 
     void addAdditionalRows(int priority);
