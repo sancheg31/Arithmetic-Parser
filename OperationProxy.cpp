@@ -1,3 +1,17 @@
 #include "OperationProxy.h"
 
-OperationProxy::OperationProxy(Operation* op): operation(op) { }
+OperationProxy::OperationProxy(Operation* op): operation(op) {
+
+}
+
+BinaryOperation* OperationProxy::tryCastToBinary() const {
+    if (operation->type() == OperationType::BinaryOperation)
+        return dynamic_cast<BinaryOperation*>(operation);
+    return nullptr;
+}
+
+UnaryOperation* OperationProxy::tryCastToUnary() const {
+    if (operation->type() == OperationType::UnaryOperation)
+        return dynamic_cast<UnaryOperation*>(operation);
+    return nullptr;
+}

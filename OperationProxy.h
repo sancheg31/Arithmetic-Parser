@@ -8,8 +8,8 @@ class OperationProxy: public Operation
 {
 public:
     OperationProxy(Operation*);
-    Operation::OperationType::BinaryOperation tryCastToBinary() const;
-    Operation::OperationType::UnaryOperation tryCastToUnary() const;
+    BinaryOperation* tryCastToBinary() const;
+    UnaryOperation* tryCastToUnary() const;
 private:
     Operation* operation;
 };
