@@ -7,7 +7,6 @@
 
 class Parser: public IParserTemplateMethod {
 public:
-    Parser();
     Parser(const OperationTable& table, const QSet<QString>& functions);
     virtual ~Parser() override;
 
@@ -16,10 +15,10 @@ public:
     void setTable(const OperationTable& t) { table = t; }
 
 protected:
-    QString removeSpaces(const QString& str) const override;
-    QVariant evalExpression(const QString & str, int & pos) const override;
-    QVariant evalTerm(const QString &str, int & pos, int priority) const override;
-    QVariant evalFactor(const QString &str, int &pos) const override;
+    virtual QString removeSpaces(const QString& str) const override;
+    virtual QVariant evalExpression(const QString & str, int & pos) const override;
+    virtual QVariant evalTerm(const QString &str, int & pos, int priority) const override;
+    virtual QVariant evalFactor(const QString &str, int &pos) const override;
 
     QVariant getFactor(const QString& str, int& pos) const;
 private:

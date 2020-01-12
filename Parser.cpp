@@ -1,7 +1,5 @@
 #include "Parser.h"
 
-
-Parser::Parser() { }
 #include <QDebug>
 
 Parser::Parser(const OperationTable& t, const QSet<QString>& cell): table(t), cellNames(cell) { }
