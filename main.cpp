@@ -11,9 +11,9 @@
 OperationContainer createUnaryOperationsList() {
     OperationContainer result;
     result.insert(new UnaryOperation([](QVariant v) { return (v.isValid()) ? v.toDouble() : v; }, "+"));
-    result.insert(new UnaryOperation([](QVariant v) { return (v.isValid()) ? -v.toDouble(): v; }, "-"));
-    result.insert(new UnaryOperation([](QVariant v) { return (v.isValid()) ? v.toDouble()+1: v; }, "++"));
-    result.insert(new UnaryOperation([](QVariant v) { return (v.isValid()) ? v.toDouble()-1: v; }, "--"));
+    result.insert(new UnaryOperation([](QVariant v) { return (v.isValid()) ? -v.toDouble() : v; }, "-"));
+    result.insert(new UnaryOperation([](QVariant v) { return (v.isValid()) ? v.toDouble()+1 : v; }, "++"));
+    result.insert(new UnaryOperation([](QVariant v) { return (v.isValid()) ? v.toDouble()-1 : v; }, "--"));
     return result;
 }
 
@@ -23,13 +23,13 @@ OperationContainer createBinaryOperationsList() {
                       return (a.isValid() && b.isValid()) ? a.toDouble() + b.toDouble() : QVariant{};
                   }, "+"));
     result.insert(new BinaryOperation([](QVariant a, QVariant b) {
-                      return (a.isValid() && b.isValid()) ? a.toDouble() + b.toDouble() : QVariant{};
+                      return (a.isValid() && b.isValid()) ? a.toDouble() - b.toDouble() : QVariant{};
                   }, "-"));
     result.insert(new BinaryOperation([](QVariant a, QVariant b) {
-                      return (a.isValid() && b.isValid()) ? a.toDouble() + b.toDouble() : QVariant{};
+                      return (a.isValid() && b.isValid()) ? a.toDouble() * b.toDouble() : QVariant{};
                   }, "*"));
     result.insert(new BinaryOperation([](QVariant a, QVariant b) {
-                      return (a.isValid() && b.isValid()) ? a.toDouble() + b.toDouble() : QVariant{};
+                      return (a.isValid() && b.isValid()) ? a.toDouble() / b.toDouble() : QVariant{};
                   }, "/"));
     return result;
 }
@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
-    QString str = "=5*++3";
+    QString str = "=++(++7)+(--6)*++12)";
     auto table = createOperationTable();
     Parser parser(table, QSet<QString>{});
     QVariant value = parser.parse(str);
