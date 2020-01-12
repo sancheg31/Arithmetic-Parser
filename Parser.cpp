@@ -59,9 +59,10 @@ QString Parser::removeSpaces(const QString& str) const {
 QVariant Parser::evalExpression(const QString& str, int & pos) const {
     QVariant result = evalTerm(str, pos, table.rowCount()-2);
     while (str[pos] != QChar::Null) {
-        BinaryOperation* curOperation = (table.currentOperation(str, pos, table.rowCount()-1))->tryCastToBinary();
-        if (curOperation == nullptr)
+        auto op = table.currentOperation(str, pos, table.rowCount()-1);
+        if (op == nullptr)
             return result;
+        BinaryOperation* curOperation = op->tryCastToBinary();
         qDebug() << "Parser::evalExpression(): first term is: " << result.toString();
         qDebug() << "Parser::evalExpression(): current operation is: " << curOperation->notation();
         pos += curOperation->notation().size();
@@ -75,7 +76,10 @@ QVariant Parser::evalExpression(const QString& str, int & pos) const {
 QVariant Parser::evalTerm(const QString& str, int & pos, int priority) const {
     QVariant result = (priority) ? evalTerm(str, pos, priority-1) : evalFactor(str, pos);
     while (str[pos] != QChar::Null) {
-        BinaryOperation* curOperation = table.currentOperation(str, pos, priority)->tryCastToBinary();
+        OperationProxy* op = table.currentOperation(str, pos, priority);
+        if (op == nullptr)
+            return result;
+        BinaryOperation* curOperation = op->tryCastToBinary();  //temporary hack TODO remove
         if (curOperation == nullptr)
             return result;
         pos += curOperation->notation().size();
@@ -102,8 +106,10 @@ QVariant Parser::evalFactor(const QString& str, int& pos) const {
             ++pos;
         }
     } else {
-
-        curOperation = table.currentOperation(str, pos, 0)->tryCastToUnary();
+        auto op = table.currentOperation(str, pos, 0);  //temporary hack TODO remove
+        if (!op)
+            return result;
+        curOperation = op->tryCastToUnary();
         if (curOperation) {
             pos += curOperation->notation().size();
             qDebug() << "Parser::evalFactor(): current unary operation is: " << curOperation->notation();

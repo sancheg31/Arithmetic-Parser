@@ -7,6 +7,7 @@ OperationFactory* OperationFactory::instance() {
         ob = new OperationFactory;
     return ob;
 }
+
 OperationProxy* OperationFactory::createBinaryOperation(BinaryOperation::function_type op, const QString& notation) const {
     return new OperationProxy(new BinaryOperation(op, notation));
 }

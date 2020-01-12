@@ -23,7 +23,7 @@ void OperationPrecedenceTable::addRow() {
 }
 
 int OperationPrecedenceTable::remove(const QString& str) {
-    for (auto & x : operations) {
+    for (OperationContainer & x : operations) {
         int c = x.remove(str);
         if (c)
             return c;
