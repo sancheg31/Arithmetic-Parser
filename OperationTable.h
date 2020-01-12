@@ -27,9 +27,6 @@ public:
     const OperationContainer& operator[](int i) const { return operations[i]; }
 private:
 
-    void insertUnaryOperation(IOperation*);
-    void insertBinaryOperation(IOperation*, int priority);
-
     void addAdditionalRows(int priority);
     void addRow();
 

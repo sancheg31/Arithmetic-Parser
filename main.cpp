@@ -39,12 +39,12 @@ OperationTable createOperationTable() {
     auto unaryOperations = createUnaryOperationsList();
     auto binaryOperations = createBinaryOperationsList();
     for (auto & op: unaryOperations)
-        table.add(op, 0);
+        table.insert(op, 0);
     for (auto & op: binaryOperations) {
         if (op->notation() == "+" || op->notation() == "-")
-            table.add(op, 2);
+            table.insert(op, 2);
         else if (op->notation() == "*" || op->notation() == "/")
-            table.add(op, 1);
+            table.insert(op, 1);
     }
     return table;
 }

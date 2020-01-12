@@ -71,7 +71,7 @@ int OperationTable::rowCount() const {
     return operations.size();
 }
 
-int OperationTable::getOperationRow(const QString &) const& str) const {
+int OperationTable::getOperationRow(const QString & str) const {
     for (int i = 0; i < operations.size(); ++i)
         if (operations[i].contains(str))
             return i;

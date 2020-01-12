@@ -57,15 +57,15 @@ QString Parser::removeSpaces(const QString& str) const {
 }
 
 QVariant Parser::evalExpression(const QString& str, int & pos) const {
-    QVariant result = evalTerm(str, pos, table.columnCount()-2);
+    QVariant result = evalTerm(str, pos, table.rowCount()-2);
     while (str[pos] != QChar::Null) {
-        BinaryOperation* curOperation = dynamic_cast<BinaryOperation*>(table.currentOperation(str, pos, table.columnCount()-1));
+        BinaryOperation* curOperation = dynamic_cast<BinaryOperation*>(table.currentOperation(str, pos, table.rowCount()-1));
         if (curOperation == nullptr)
             return result;
         qDebug() << "Parser::evalExpression(): first term is: " << result.toString();
         qDebug() << "Parser::evalExpression(): current operation is: " << curOperation->notation();
         pos += curOperation->notation().size();
-        QVariant term = evalTerm(str, pos, table.columnCount()-2);
+        QVariant term = evalTerm(str, pos, table.rowCount()-2);
         qDebug() << "Parser::evalExpression(): second term is: " << term.toString();
         result = curOperation->operator()(result, term);
     }
