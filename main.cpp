@@ -20,16 +20,16 @@ OperationContainer createUnaryOperationsList() {
 OperationContainer createBinaryOperationsList() {
     OperationContainer result;
     result.insert(new BinaryOperation([](QVariant a, QVariant b) {
-                      return (a.isValid() && b.isValid()) ? a.toDouble() + b.toDouble() : QVariant::Invalid;
+                      return (a.isValid() && b.isValid()) ? a.toDouble() + b.toDouble() : QVariant{};
                   }, "+"));
     result.insert(new BinaryOperation([](QVariant a, QVariant b) {
-                      return (a.isValid() && b.isValid()) ? a.toDouble() + b.toDouble() : QVariant::Invalid;
+                      return (a.isValid() && b.isValid()) ? a.toDouble() + b.toDouble() : QVariant{};
                   }, "-"));
     result.insert(new BinaryOperation([](QVariant a, QVariant b) {
-                      return (a.isValid() && b.isValid()) ? a.toDouble() + b.toDouble() : QVariant::Invalid;
+                      return (a.isValid() && b.isValid()) ? a.toDouble() + b.toDouble() : QVariant{};
                   }, "*"));
     result.insert(new BinaryOperation([](QVariant a, QVariant b) {
-                      return (a.isValid() && b.isValid()) ? a.toDouble() + b.toDouble() : QVariant::Invalid;
+                      return (a.isValid() && b.isValid()) ? a.toDouble() + b.toDouble() : QVariant{};
                   }, "/"));
     return result;
 }
@@ -38,47 +38,15 @@ OperationTable createOperationTable() {
     OperationTable table;
     auto unaryOperations = createUnaryOperationsList();
     auto binaryOperations = createBinaryOperationsList();
-    table.add(new UnaryOperation([](QVariant v) -> QVariant {
-                  return (v.type() == QVariant::Invalid) ? v : v.toDouble();
-              }, "+"), 0);
-    table.add(new UnaryOperation([](QVariant v) -> QVariant {
-                  return (v.type() == QVariant::Invalid) ? v : -v.toDouble();
-              }, "-"), 0);
-    table.add(new UnaryOperation([](QVariant v) -> QVariant {
-                  return (v.type() == QVariant::Invalid) ? v : v.toDouble()+1;
-              }, "++"), 0);
-    table.add(new UnaryOperation([](QVariant v) -> QVariant {
-                  return (v.type() == QVariant::Invalid) ? v : v.toDouble()-1;
-              }, "--"), 0);
-    table.add(new BinaryOperation([](QVariant v1, QVariant v2) -> QVariant {
-                  return (v1.type() == QVariant::Invalid || v2.type() == QVariant::Invalid) ?
-                  QVariant{} : qPow(v1.toDouble(), v2.toDouble());
-              }, "^"), 1);
-    table.add(new BinaryOperation([](QVariant v1, QVariant v2) -> QVariant {
-                  return (v1.type() == QVariant::Invalid || v2.type() == QVariant::Invalid) ?
-                  QVariant{} : v1.toDouble() * v2.toDouble();
-              }, "*"), 2);
-    table.add(new BinaryOperation([](QVariant v1, QVariant v2) -> QVariant {
-                  return (v1.type() == QVariant::Invalid || v2.type() == QVariant::Invalid) ?
-                    QVariant{} : v1.toDouble() / v2.toDouble();
-              }, "/"), 2);
-    table.add(new BinaryOperation([](QVariant v1, QVariant v2) -> QVariant {
-                  return (v1.type() == QVariant::Invalid || v2.type() == QVariant::Invalid) ?
-                  QVariant{} : v1.toDouble() + v2.toDouble();
-              }, "+"), 3);
-    table.add(new BinaryOperation([](QVariant v1, QVariant v2) -> QVariant {
-                  return (v1.type() == QVariant::Invalid || v2.type() == QVariant::Invalid) ?
-                    QVariant{} : v1.toDouble() - v2.toDouble();
-              }, "-"), 3);
-    table.add(new BinaryOperation([](QVariant v1, QVariant v2) -> QVariant {
-                  return (v1.type() == QVariant::Invalid || v2.type() == QVariant::Invalid) ?
-                    QVariant{} : v1.toDouble() || v2.toDouble();
-              }, "||"), 4);
-    table.add(new BinaryOperation([](QVariant v1, QVariant v2) -> QVariant {
-                  return (v1.type() == QVariant::Invalid || v2.type() == QVariant::Invalid) ?
-                    QVariant{} : v1.toDouble() && v2.toDouble();
-              }, "&&"), 4);
-
+    for (auto & op: unaryOperations)
+        table.add(op, 0);
+    for (auto & op: binaryOperations) {
+        if (op->notation() == "+" && op->notation() == "-")
+            table.add(op, 1);
+        else if (op->notation() == "*" && op->notation() == "/")
+            table.add(op, 2);
+    }
+    return table;
 }
 
 int main(int argc, char *argv[])
@@ -86,11 +54,11 @@ int main(int argc, char *argv[])
     QCoreApplication a(argc, argv);
 
     QString str = "=5*++3";
+    auto table = createOperationTable();
     Parser parser(table, QSet<QString>{});
     QVariant value = parser.parse(str);
     qDebug() << "result is: " << ((value.type() == QVariant::Invalid) ? QString("####") : value.toString());
     return a.exec();
-
 
 }
 
