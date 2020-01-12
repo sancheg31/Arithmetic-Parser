@@ -1,19 +1,19 @@
 #pragma once
 
-#include "IOperation.h"
+#include "Operation.h"
 
-class UnaryOperation: public IOperation {
+class UnaryOperation: public Operation
+{
 public:
-    UnaryOperation(std::function<QVariant(QVariant)>, const QString&);
+    using function_type = std::function<QVariant(QVariant)>;
+
+    UnaryOperation(function_type, const QString&);
     UnaryOperation(const UnaryOperation&);
     UnaryOperation& operator=(const UnaryOperation&);
 
     virtual ~UnaryOperation() override;
-    virtual OperationType type() const override { return OperationType::UnaryOperation; }
-    virtual QVariant operator()(QVariant v) const { return op(v); }
-    virtual QString notation() const override { return opNotation; }
+    virtual QVariant operator()(QVariant v) const;
 
 private:
-    std::function<QVariant(QVariant)> op;
-    QString opNotation;
+    function_type operation;
 };

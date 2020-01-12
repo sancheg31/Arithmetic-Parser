@@ -3,7 +3,7 @@
 #include <QString>
 #include <QVariant>
 
-class IOperation {
+class Operation {
 public:
 
     enum class OperationType {
@@ -11,12 +11,12 @@ public:
         BinaryOperation
     };
 
-    virtual ~IOperation();
+    virtual ~Operation();
     virtual QString notation() const;
     virtual OperationType type() const;
 
 protected:
-    IOperation(QString notation, OperationType type): operNotation(notation), type(operType) {}
+    Operation(QString notation, OperationType type): operNotation(notation), operType(type) { }
     QString operNotation;
     OperationType operType;
 };

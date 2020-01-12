@@ -12,7 +12,7 @@ public:
     using value_type = OperationContainer;
     OperationTable();
 
-    void insert(IOperation*, int);
+    void insert(Operation*, int);
     int remove(const QString&);
 
     bool contains(const QString&) const;
@@ -20,8 +20,8 @@ public:
     int rowCount() const;
     int getOperationRow(const QString&) const;
 
-    QPair<IOperation*, int> nearestOperation(const QString&, int pos, int priority) const;
-    IOperation* currentOperation(const QString&, int pos, int priority) const;
+    QPair<Operation*, int> nearestOperation(const QString&, int pos, int priority) const;
+    Operation* currentOperation(const QString&, int pos, int priority) const;
 
     OperationContainer& operator[](int i) { return operations[i]; }
     const OperationContainer& operator[](int i) const { return operations[i]; }

@@ -3,7 +3,7 @@
 #include <QtMath>
 
 #include "Parser.h"
-#include "IOperation.h"
+#include "Operation.h"
 #include "UnaryOperation.h"
 #include "OperationContainer.h"
 #include "OperationTable.h"
