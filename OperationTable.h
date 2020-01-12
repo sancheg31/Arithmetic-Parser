@@ -8,15 +8,17 @@
 
 class OperationTable {
 public:
+
+    using value_type = OperationContainer;
     OperationTable();
 
-    void add(IOperation*, int);
+    void insert(IOperation*, int);
     int remove(const QString&);
 
     bool contains(const QString&) const;
     bool isEmpty() const;
-    int columnCount() const;
-    int column(const QString&) const;
+    int rowCount() const;
+    int getOperationRow(const QString&) const;
 
     QPair<IOperation*, int> nearestOperation(const QString&, int pos, int priority) const;
     IOperation* currentOperation(const QString&, int pos, int priority) const;
@@ -24,5 +26,12 @@ public:
     OperationContainer& operator[](int i) { return operations[i]; }
     const OperationContainer& operator[](int i) const { return operations[i]; }
 private:
+
+    void insertUnaryOperation(IOperation*);
+    void insertBinaryOperation(IOperation*, int priority);
+
+    void addAdditionalRows(int priority);
+    void addRow();
+
     QVector<OperationContainer> operations;
 };

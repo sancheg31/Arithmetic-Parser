@@ -3,24 +3,23 @@
 #include "OperationTable.h"
 
 OperationTable::OperationTable() {
-    operations.push_back(OperationContainer{});
+    addRow();
 }
 
-void OperationTable::add(IOperation* op, int priority) {
+void OperationTable::insert(IOperation* op, int priority) {
+    if (priority >= operations.size()) {
+        addAdditionalRows(priority);
+    }
+    operations[priority].insert(op);
+}
 
-    if (priority == 0 && op->type() == IOperation::OperationType::UnaryOperation) {
-        operations[0].insert(dynamic_cast<UnaryOperation*>(op));
-    }
-    else if (op->type() == IOperation::OperationType::BinaryOperation) {
-        if (priority > 0 && priority < operations.size()) {
-            operations[priority].insert(dynamic_cast<BinaryOperation*>(op));
-        }
-        else if (priority >= operations.size()) {
-            while (operations.size() <= priority)
-            operations.push_back(OperationContainer{});
-            operations[priority].insert(dynamic_cast<BinaryOperation*>(op));
-        }
-    }
+void OperationTable::addAdditionalRows(int priority) {
+    while (operations.size() <= priority)
+        addRow();
+}
+
+void OperationTable::addRow() {
+    operations.push_back(OperationContainer{});
 }
 
 int OperationTable::remove(const QString& str) {
@@ -41,6 +40,8 @@ IOperation* OperationTable::currentOperation(const QString & str, int pos, int p
     }
     return nullptr;
 }
+
+
 
 QPair<IOperation*, int> OperationTable::nearestOperation(const QString & str, int pos, int priority) const {
     auto list = operations[priority].toSortedList();
@@ -66,11 +67,11 @@ bool OperationTable::contains(const QString& str) const {
 bool OperationTable::isEmpty() const {
     return operations.isEmpty();
 }
-int OperationTable::columnCount() const {
+int OperationTable::rowCount() const {
     return operations.size();
 }
 
-int OperationTable::column(const QString& str) const {
+int OperationTable::getOperationRow(const QString &) const& str) const {
     for (int i = 0; i < operations.size(); ++i)
         if (operations[i].contains(str))
             return i;
