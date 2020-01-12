@@ -19,6 +19,7 @@ SOURCES += \
         IParserTemplateMethod.cpp \
         Operation.cpp \
         OperationContainer.cpp \
+        OperationFactory.cpp \
         OperationPrecedenceTable.cpp \
         OperationProxy.cpp \
         Parser.cpp \
@@ -36,6 +37,7 @@ HEADERS += \
     IParserTemplateMethod.h \
     Operation.h \
     OperationContainer.h \
+    OperationFactory.h \
     OperationPrecedenceTable.h \
     OperationProxy.h \
     Parser.h \

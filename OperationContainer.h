@@ -11,26 +11,28 @@ class OperationContainer
 {
 public:
 
-    using iterator = QHash<QString, OperationProxy*>::iterator;
-    using const_iterator = QHash<QString, OperationProxy*>::const_iterator;
+    using value_type = OperationProxy*;
+    using iterator = QHash<QString, value_type>::iterator;
+    using const_iterator = QHash<QString, value_type>::const_iterator;
+
 
     OperationContainer();
     OperationContainer(const OperationContainer&);
-    OperationContainer(std::initializer_list<OperationProxy*>& list);
+    OperationContainer(std::initializer_list<value_type>& list);
 
     OperationContainer& operator=(const OperationContainer&);
 
-    iterator insert(OperationProxy*);
+    iterator insert(value_type);
     int remove(const QString&);
     iterator find(const QString&);
 
-    QList<OperationProxy*> toSortedList() const;
+    QList<value_type> toSortedList() const;
     bool contains(const QString&) const;
     int size() const;
     bool isEmpty() const;
 
-    const OperationProxy* operator[](const QString&) const;
-    OperationProxy* operator[](const QString&);
+    value_type const operator[](const QString&) const;
+    value_type operator[](const QString&);
 
     iterator begin();
     const_iterator begin() const;
@@ -41,8 +43,8 @@ public:
     const_iterator cend() const;
 
 private:
-    QList<OperationProxy*> createList() const;
-    QHash<QString, OperationProxy*> oper;
+    QList<value_type> createList() const;
+    QHash<QString, value_type> oper;
 };
 
 

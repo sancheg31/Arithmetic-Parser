@@ -6,7 +6,7 @@ OperationPrecedenceTable::OperationPrecedenceTable() {
     addRow();
 }
 
-void OperationPrecedenceTable::insert(Operation* op, int priority) {
+void OperationPrecedenceTable::insert(value_type op, int priority) {
     if (priority >= operations.size()) {
         addAdditionalRows(priority);
     }
@@ -31,7 +31,7 @@ int OperationPrecedenceTable::remove(const QString& str) {
     return 0;
 }
 
-Operation* OperationPrecedenceTable::currentOperation(const QString & str, int pos, int priority) const {
+auto OperationPrecedenceTable::currentOperation(const QString & str, int pos, int priority) const -> value_type {
     auto list = operations[priority].toSortedList();
     for (auto it = list.rbegin(); it != list.rend(); ++it) {
         int curIndex = str.indexOf((*it)->notation(), pos);
@@ -43,10 +43,10 @@ Operation* OperationPrecedenceTable::currentOperation(const QString & str, int p
 
 
 
-QPair<Operation*, int> OperationPrecedenceTable::nearestOperation(const QString & str, int pos, int priority) const {
+auto OperationPrecedenceTable::nearestOperation(const QString & str, int pos, int priority) const -> QPair<value_type, int> {
     auto list = operations[priority].toSortedList();
     int minIndex = str.size();
-    Operation* result = nullptr;
+    value_type result = nullptr;
     for (int i = list.size()-1; i > -1; --i) {
         int curIndex = str.indexOf(list[i]->notation(), pos);
         if (curIndex < minIndex && curIndex != -1) {

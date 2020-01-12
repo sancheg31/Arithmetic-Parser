@@ -9,7 +9,7 @@ OperationContainer::OperationContainer(const OperationContainer& operations) {
         oper.insert(it->notation(), it);
 }
 
-OperationContainer::OperationContainer(std::initializer_list<OperationProxy*> & list) {
+OperationContainer::OperationContainer(std::initializer_list<value_type> & list) {
     for (const auto & it: list)
         oper.insert(it->notation(), it);
 }
@@ -20,7 +20,7 @@ OperationContainer& OperationContainer::operator=(const OperationContainer & ope
     return *this;
 }
 
-auto OperationContainer::insert(OperationProxy* op) -> iterator {
+auto OperationContainer::insert(value_type op) -> iterator {
     return oper.insert(op->notation(), op);
 }
 
@@ -28,9 +28,9 @@ auto OperationContainer::find(const QString& str) -> iterator {
     return oper.find(str);
 }
 
-QList<OperationProxy*> OperationContainer::toSortedList() const {
-    QList<OperationProxy*> list = createList();
-    std::sort(list.begin(), list.end(), [](OperationProxy* op1, OperationProxy* op2) -> bool {
+auto OperationContainer::toSortedList() const -> QList<value_type> {
+    QList<value_type> list = createList();
+    std::sort(list.begin(), list.end(), [](value_type op1, value_type op2) -> bool {
             return op1->notation().size() < op2->notation().size();
         });
     return list;
@@ -52,7 +52,7 @@ bool OperationContainer::isEmpty() const {
     return oper.isEmpty();
 }
 
-const OperationProxy *OperationContainer::operator[](const QString& s) const {
+auto OperationContainer::operator[](const QString& s) const -> value_type const {
     return oper[s];
 }
 
@@ -84,8 +84,8 @@ OperationContainer::const_iterator OperationContainer::cend() const {
     return oper.cend();
 }
 
-QList<OperationProxy*> OperationContainer::createList() const {
-    QList<OperationProxy*> list;
+auto OperationContainer::createList() const -> QList<value_type> {
+    QList<value_type> list;
     for (auto & x: oper)
         list.push_back(x);
     return list;

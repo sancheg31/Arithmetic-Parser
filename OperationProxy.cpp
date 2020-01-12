@@ -15,3 +15,7 @@ UnaryOperation* OperationProxy::tryCastToUnary() const {
         return dynamic_cast<UnaryOperation*>(operation);
     return nullptr;
 }
+
+Operation* OperationProxy::clone() const {
+    return operation->clone();
+}
