@@ -16,8 +16,6 @@ public:
     virtual QString notation() const;
     virtual OperationType type() const;
 
-    virtual Operation* clone() const = 0;
-
 protected:
     Operation();
     Operation(QString notation, OperationType type);
