@@ -19,8 +19,8 @@ SOURCES += \
         IParserTemplateMethod.cpp \
         Operation.cpp \
         OperationContainer.cpp \
+        OperationPrecedenceTable.cpp \
         OperationProxy.cpp \
-        OperationTable.cpp \
         Parser.cpp \
         TesterWindow.cpp \
         UnaryOperation.cpp \
@@ -36,8 +36,8 @@ HEADERS += \
     IParserTemplateMethod.h \
     Operation.h \
     OperationContainer.h \
+    OperationPrecedenceTable.h \
     OperationProxy.h \
-    OperationTable.h \
     Parser.h \
     TesterWindow.h \
     UnaryOperation.h

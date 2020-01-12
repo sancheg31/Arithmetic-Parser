@@ -2,17 +2,17 @@
 
 #include <QSet>
 
-#include "OperationTable.h"
+#include "OperationPrecedenceTable.h"
 #include "IParserTemplateMethod.h"
 
 class Parser: public IParserTemplateMethod {
 public:
-    Parser(const OperationTable& table, const QSet<QString>& functions);
+    Parser(const OperationPrecedenceTable& table, const QSet<QString>& functions);
     virtual ~Parser() override;
 
     virtual QVariant parse(const QString&) const override;
     void setCellNames(const QSet<QString> cells) { cellNames = cells; }
-    void setTable(const OperationTable& t) { table = t; }
+    void setTable(const OperationPrecedenceTable& t) { table = t; }
 
 protected:
     virtual QString removeSpaces(const QString& str) const override;
@@ -22,7 +22,7 @@ protected:
 
     QVariant getFactor(const QString& str, int& pos) const;
 private:
-    OperationTable table;
+    OperationPrecedenceTable table;
     QSet<QString> cellNames;
 
 };

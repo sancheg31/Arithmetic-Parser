@@ -1,28 +1,28 @@
 #include <QDebug>
 
-#include "OperationTable.h"
+#include "OperationPrecedenceTable.h"
 
-OperationTable::OperationTable() {
+OperationPrecedenceTable::OperationPrecedenceTable() {
     addRow();
 }
 
-void OperationTable::insert(Operation* op, int priority) {
+void OperationPrecedenceTable::insert(Operation* op, int priority) {
     if (priority >= operations.size()) {
         addAdditionalRows(priority);
     }
     operations[priority].insert(op);
 }
 
-void OperationTable::addAdditionalRows(int priority) {
+void OperationPrecedenceTable::addAdditionalRows(int priority) {
     while (operations.size() <= priority)
         addRow();
 }
 
-void OperationTable::addRow() {
+void OperationPrecedenceTable::addRow() {
     operations.push_back(OperationContainer{});
 }
 
-int OperationTable::remove(const QString& str) {
+int OperationPrecedenceTable::remove(const QString& str) {
     for (auto & x : operations) {
         int c = x.remove(str);
         if (c)
@@ -31,7 +31,7 @@ int OperationTable::remove(const QString& str) {
     return 0;
 }
 
-Operation* OperationTable::currentOperation(const QString & str, int pos, int priority) const {
+Operation* OperationPrecedenceTable::currentOperation(const QString & str, int pos, int priority) const {
     auto list = operations[priority].toSortedList();
     for (auto it = list.rbegin(); it != list.rend(); ++it) {
         int curIndex = str.indexOf((*it)->notation(), pos);
@@ -43,7 +43,7 @@ Operation* OperationTable::currentOperation(const QString & str, int pos, int pr
 
 
 
-QPair<Operation*, int> OperationTable::nearestOperation(const QString & str, int pos, int priority) const {
+QPair<Operation*, int> OperationPrecedenceTable::nearestOperation(const QString & str, int pos, int priority) const {
     auto list = operations[priority].toSortedList();
     int minIndex = str.size();
     Operation* result = nullptr;
@@ -57,21 +57,21 @@ QPair<Operation*, int> OperationTable::nearestOperation(const QString & str, int
     return QPair{result, minIndex};
 }
 
-bool OperationTable::contains(const QString& str) const {
+bool OperationPrecedenceTable::contains(const QString& str) const {
     for (auto & x: operations)
         if (x.contains(str))
             return true;
     return false;
 }
 
-bool OperationTable::isEmpty() const {
+bool OperationPrecedenceTable::isEmpty() const {
     return operations.isEmpty();
 }
-int OperationTable::rowCount() const {
+int OperationPrecedenceTable::rowCount() const {
     return operations.size();
 }
 
-int OperationTable::getOperationRow(const QString & str) const {
+int OperationPrecedenceTable::getOperationRow(const QString & str) const {
     for (int i = 0; i < operations.size(); ++i)
         if (operations[i].contains(str))
             return i;

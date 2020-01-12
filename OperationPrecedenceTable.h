@@ -6,11 +6,11 @@
 #include "UnaryOperation.h"
 #include "BinaryOperation.h"
 
-class OperationTable {
+class OperationPrecedenceTable {
 public:
 
     using value_type = OperationContainer;
-    OperationTable();
+    OperationPrecedenceTable();
 
     void insert(Operation*, int);
     int remove(const QString&);

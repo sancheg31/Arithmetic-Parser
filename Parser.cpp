@@ -2,7 +2,7 @@
 
 #include <QDebug>
 
-Parser::Parser(const OperationTable& t, const QSet<QString>& cell): table(t), cellNames(cell) { }
+Parser::Parser(const OperationPrecedenceTable& t, const QSet<QString>& cell): table(t), cellNames(cell) { }
 
 Parser::~Parser() { }
 

@@ -6,7 +6,7 @@
 #include "Operation.h"
 #include "UnaryOperation.h"
 #include "OperationContainer.h"
-#include "OperationTable.h"
+#include "OperationPrecedenceTable.h"
 
 OperationContainer createUnaryOperationsList() {
     OperationContainer result;
@@ -34,8 +34,8 @@ OperationContainer createBinaryOperationsList() {
     return result;
 }
 
-OperationTable createOperationTable() {
-    OperationTable table;
+OperationPrecedenceTable createOperationTable() {
+    OperationPrecedenceTable table;
     auto unaryOperations = createUnaryOperationsList();
     auto binaryOperations = createBinaryOperationsList();
     for (auto & op: unaryOperations)
