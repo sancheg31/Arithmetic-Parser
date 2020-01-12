@@ -16,6 +16,7 @@ public:
     virtual OperationType type() const;
 
 protected:
+    Operation();
     Operation(QString notation, OperationType type): operNotation(notation), operType(type) { }
     QString operNotation;
     OperationType operType;
