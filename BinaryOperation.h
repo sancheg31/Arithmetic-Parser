@@ -14,8 +14,9 @@ public:
     BinaryOperation& operator=(const BinaryOperation&);
 
     virtual ~BinaryOperation() override;
-    virtual QVariant operator()(QVariant v1, QVariant v2) const;
 
+    virtual QVariant operator()(QVariant v1, QVariant v2) const;
+    virtual BinaryOperation* clone() const override;
 private:
     function_type operation;
 };

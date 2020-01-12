@@ -17,4 +17,9 @@ inline QVariant UnaryOperation::operator()(QVariant v) const {
     return operation(v);
 }
 
+UnaryOperation* UnaryOperation::clone() const {
+    UnaryOperation* u = new UnaryOperation(*this);
+    return u;
+}
+
 UnaryOperation::~UnaryOperation() {}

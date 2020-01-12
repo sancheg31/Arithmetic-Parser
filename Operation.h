@@ -12,13 +12,15 @@ public:
     };
 
     virtual ~Operation();
+
     virtual QString notation() const;
     virtual OperationType type() const;
 
-protected:
-    Operation() {}
-    Operation(QString notation, OperationType type): operNotation(notation), operType(type) { }
+    virtual Operation* clone() const = 0;
 
+protected:
+    Operation();
+    Operation(QString notation, OperationType type);
     QString operNotation;
     OperationType operType;
 };

@@ -13,6 +13,7 @@ public:
 
     virtual ~UnaryOperation() override;
     virtual QVariant operator()(QVariant v) const;
+    virtual UnaryOperation* clone() const override;
 
 private:
     function_type operation;

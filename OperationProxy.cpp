@@ -1,6 +1,6 @@
 #include "OperationProxy.h"
 
-OperationProxy::OperationProxy(Operation* op): operation(op) {
+OperationProxy::OperationProxy(Operation* op): Operation(), operation(op) {
 
 }
 

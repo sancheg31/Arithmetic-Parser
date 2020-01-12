@@ -18,4 +18,9 @@ inline QVariant BinaryOperation::operator()(QVariant v1, QVariant v2) const {
     return operation(v1, v2);
 }
 
+BinaryOperation* BinaryOperation::clone() const {
+    BinaryOperation* b = new BinaryOperation(*this);
+    return b;
+}
+
 BinaryOperation::~BinaryOperation() { }
