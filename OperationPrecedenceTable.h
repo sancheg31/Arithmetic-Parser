@@ -3,8 +3,7 @@
 #include <QVector>
 
 #include "OperationContainer.h"
-#include "UnaryOperation.h"
-#include "BinaryOperation.h"
+#include "OperationProxy.h"
 
 class OperationPrecedenceTable {
 public:

@@ -59,7 +59,7 @@ QString Parser::removeSpaces(const QString& str) const {
 QVariant Parser::evalExpression(const QString& str, int & pos) const {
     QVariant result = evalTerm(str, pos, table.rowCount()-2);
     while (str[pos] != QChar::Null) {
-        BinaryOperation* curOperation = dynamic_cast<BinaryOperation*>(table.currentOperation(str, pos, table.rowCount()-1));
+        BinaryOperation* curOperation = (table.currentOperation(str, pos, table.rowCount()-1))->tryCastToBinary();
         if (curOperation == nullptr)
             return result;
         qDebug() << "Parser::evalExpression(): first term is: " << result.toString();
@@ -75,8 +75,7 @@ QVariant Parser::evalExpression(const QString& str, int & pos) const {
 QVariant Parser::evalTerm(const QString& str, int & pos, int priority) const {
     QVariant result = (priority) ? evalTerm(str, pos, priority-1) : evalFactor(str, pos);
     while (str[pos] != QChar::Null) {
-        BinaryOperation* curOperation = dynamic_cast<BinaryOperation*>(
-                    table.currentOperation(str, pos, priority));
+        BinaryOperation* curOperation = table.currentOperation(str, pos, priority)->tryCastToBinary();
         if (curOperation == nullptr)
             return result;
         pos += curOperation->notation().size();
@@ -104,7 +103,7 @@ QVariant Parser::evalFactor(const QString& str, int& pos) const {
         }
     } else {
 
-        curOperation = dynamic_cast<UnaryOperation*>(table.currentOperation(str, pos, 0));
+        curOperation = table.currentOperation(str, pos, 0)->tryCastToUnary();
         if (curOperation) {
             pos += curOperation->notation().size();
             qDebug() << "Parser::evalFactor(): current unary operation is: " << curOperation->notation();

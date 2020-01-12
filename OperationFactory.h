@@ -7,6 +7,7 @@
 
 class OperationFactory {
 public:
+    static OperationFactory* instance();
     OperationProxy* createBinaryOperation(BinaryOperation::function_type op, const QString& notation) const;
     OperationProxy* createUnaryOperation(UnaryOperation::function_type op, const QString& notation) const;
 };

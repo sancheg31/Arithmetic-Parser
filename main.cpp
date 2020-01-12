@@ -3,32 +3,31 @@
 #include <QtMath>
 
 #include "Parser.h"
-#include "Operation.h"
-#include "UnaryOperation.h"
+#include "OperationFactory.h"
 #include "OperationContainer.h"
 #include "OperationPrecedenceTable.h"
 
-OperationContainer createUnaryOperationsList() {
+OperationContainer createUnaryOperationsList(OperationFactory* factory) {
     OperationContainer result;
-    result.insert(new UnaryOperation([](QVariant v) -> QVariant { return (v.isValid()) ? v.toDouble() : v; }, "+"));
-    result.insert(new UnaryOperation([](QVariant v) -> QVariant { return (v.isValid()) ? -v.toDouble() : v; }, "-"));
-    result.insert(new UnaryOperation([](QVariant v) -> QVariant { return (v.isValid()) ? v.toDouble()+1 : v; }, "++"));
-    result.insert(new UnaryOperation([](QVariant v) -> QVariant { return (v.isValid()) ? v.toDouble()-1 : v; }, "--"));
+    result.insert(factory->createUnaryOperation([](QVariant v) -> QVariant { return (v.isValid()) ? v.toDouble() : v; }, "+"));
+    result.insert(factory->createUnaryOperation([](QVariant v) -> QVariant { return (v.isValid()) ? -v.toDouble() : v; }, "-"));
+    result.insert(factory->createUnaryOperation([](QVariant v) -> QVariant { return (v.isValid()) ? v.toDouble()+1 : v; }, "++"));
+    result.insert(factory->createUnaryOperation([](QVariant v) -> QVariant { return (v.isValid()) ? v.toDouble()-1 : v; }, "--"));
     return result;
 }
 
-OperationContainer createBinaryOperationsList() {
+OperationContainer createBinaryOperationsList(OperationFactory* factory) {
     OperationContainer result;
-    result.insert(new BinaryOperation([](QVariant a, QVariant b) -> QVariant {
+    result.insert(factory->createBinaryOperation([](QVariant a, QVariant b) -> QVariant {
                       return (a.isValid() && b.isValid()) ? a.toDouble() + b.toDouble() : QVariant{};
                   }, "+"));
-    result.insert(new BinaryOperation([](QVariant a, QVariant b) -> QVariant {
+    result.insert(factory->createBinaryOperation([](QVariant a, QVariant b) -> QVariant {
                       return (a.isValid() && b.isValid()) ? a.toDouble() - b.toDouble() : QVariant{};
                   }, "-"));
-    result.insert(new BinaryOperation([](QVariant a, QVariant b) -> QVariant {
+    result.insert(factory->createBinaryOperation([](QVariant a, QVariant b) -> QVariant {
                       return (a.isValid() && b.isValid()) ? a.toDouble() * b.toDouble() : QVariant{};
                   }, "*"));
-    result.insert(new BinaryOperation([](QVariant a, QVariant b) -> QVariant {
+    result.insert(factory->createBinaryOperation([](QVariant a, QVariant b) -> QVariant {
                       return (a.isValid() && b.isValid()) ? a.toDouble() / b.toDouble() : QVariant{};
                   }, "/"));
     return result;
@@ -36,8 +35,9 @@ OperationContainer createBinaryOperationsList() {
 
 OperationPrecedenceTable createOperationTable() {
     OperationPrecedenceTable table;
-    auto unaryOperations = createUnaryOperationsList();
-    auto binaryOperations = createBinaryOperationsList();
+    auto factory = OperationFactory::instance();
+    auto unaryOperations = createUnaryOperationsList(factory);
+    auto binaryOperations = createBinaryOperationsList(factory);
     for (auto & op: unaryOperations)
         table.insert(op, 0);
     for (auto & op: binaryOperations) {

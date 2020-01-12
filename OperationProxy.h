@@ -11,7 +11,10 @@ public:
 
     BinaryOperation* tryCastToBinary() const;
     UnaryOperation* tryCastToUnary() const;
-    virtual Operation * clone() const override;
+
+    virtual OperationType type() const override;
+    virtual QString notation() const override;
+    virtual Operation* clone() const override;
 private:
     Operation* operation;
 };
