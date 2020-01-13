@@ -79,6 +79,7 @@ auto OperationContainer::end() const -> const_iterator {
 auto OperationContainer::cbegin() const -> const_iterator {
     return oper.cbegin();
 }
+
 auto OperationContainer::cend() const -> const_iterator {
     return oper.cend();
 }
