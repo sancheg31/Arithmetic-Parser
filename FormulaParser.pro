@@ -17,6 +17,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         BinaryOperation.cpp \
         IParserTemplateMethod.cpp \
+        LiteralExpression.cpp \
         Operation.cpp \
         OperationContainer.cpp \
         OperationFactory.cpp \
@@ -35,6 +36,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     BinaryOperation.h \
     IParserTemplateMethod.h \
+    LiteralExpression.h \
     Operation.h \
     OperationContainer.h \
     OperationFactory.h \
