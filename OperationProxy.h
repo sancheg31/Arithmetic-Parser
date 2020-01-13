@@ -14,7 +14,7 @@ public:
 
     virtual OperationType type() const override;
     virtual QString notation() const override;
-    virtual Operation* clone() const override;
+    virtual OperationProxy* clone() const override;
 private:
     Operation* operation;
 };

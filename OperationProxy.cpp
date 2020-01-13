@@ -24,6 +24,6 @@ QString OperationProxy::notation() const {
     return operation->notation();
 }
 
-Operation* OperationProxy::clone() const {
-    return operation->clone();
+OperationProxy* OperationProxy::clone() const {
+    return new OperationProxy(operation);
 }

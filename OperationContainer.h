@@ -19,7 +19,6 @@ public:
     OperationContainer();
     OperationContainer(const OperationContainer&);
     OperationContainer(std::initializer_list<value_type>& list);
-
     OperationContainer& operator=(const OperationContainer&);
 
     iterator insert(value_type);
@@ -31,7 +30,7 @@ public:
     int size() const;
     bool isEmpty() const;
 
-    value_type const operator[](const QString&) const;
+    value_type operator[](const QString&) const;
     value_type operator[](const QString&);
 
     iterator begin();

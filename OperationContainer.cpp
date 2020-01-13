@@ -6,22 +6,22 @@ OperationContainer::OperationContainer() {
 
 OperationContainer::OperationContainer(const OperationContainer& operations) {
     for (const auto & it: operations)
-        oper.insert(it->notation(), it);
+        oper.insert(it->notation(), it->clone());
 }
 
-OperationContainer::OperationContainer(std::initializer_list<value_type> & list) {
+OperationContainer::OperationContainer(std::initializer_list<value_type>& list) {
     for (const auto & it: list)
-        oper.insert(it->notation(), it);
+        oper.insert(it->notation(), it->clone());
 }
 
-OperationContainer& OperationContainer::operator=(const OperationContainer & operations) {
+OperationContainer& OperationContainer::operator=(const OperationContainer& operations) {
     for (const auto & it: operations)
-        oper.insert(it->notation(), it);
+        oper.insert(it->notation(), it->clone());
     return *this;
 }
 
 auto OperationContainer::insert(value_type op) -> iterator {
-    return oper.insert(op->notation(), op);
+    return oper.insert(op->notation(), op->clone());
 }
 
 auto OperationContainer::find(const QString& str) -> iterator {
@@ -52,35 +52,34 @@ bool OperationContainer::isEmpty() const {
     return oper.isEmpty();
 }
 
-auto OperationContainer::operator[](const QString& s) const -> value_type const {
+auto OperationContainer::operator[](const QString& s) const -> value_type {
     return oper[s];
 }
 
-OperationProxy *OperationContainer::operator[](const QString& s) {
+auto OperationContainer::operator[](const QString& s) -> value_type {
     return oper[s];
 }
 
-OperationContainer::iterator OperationContainer::begin() {
+auto OperationContainer::begin() -> iterator {
     return oper.begin();
 }
 
-OperationContainer::const_iterator OperationContainer::begin() const {
+auto OperationContainer::begin() const -> const_iterator {
     return oper.begin();
 }
 
-OperationContainer::iterator OperationContainer::end() {
+auto OperationContainer::end() -> iterator {
     return oper.end();
 }
 
-OperationContainer::const_iterator OperationContainer::end() const {
+auto OperationContainer::end() const -> const_iterator {
     return oper.end();
 }
 
-OperationContainer::const_iterator OperationContainer::cbegin() const {
+auto OperationContainer::cbegin() const -> const_iterator {
     return oper.cbegin();
 }
-
-OperationContainer::const_iterator OperationContainer::cend() const {
+auto OperationContainer::cend() const -> const_iterator {
     return oper.cend();
 }
 

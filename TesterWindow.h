@@ -21,7 +21,10 @@ private slots:
     void parseFormClicked();
 
 private:
+    void displayResult(QVariant);
+
     const int MAX_DIGIT_COUNT = 16;
-    IParserTemplateMethod* parser;
     Ui::TesterWindow *ui;
+    IParserTemplateMethod* parser;
+
 };

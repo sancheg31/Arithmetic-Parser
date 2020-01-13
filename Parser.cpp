@@ -60,9 +60,11 @@ QVariant Parser::evalExpression(const QString& str, int & pos) const {
     QVariant result = evalTerm(str, pos, table.rowCount()-2);
     while (str[pos] != QChar::Null) {
         auto op = table.currentOperation(str, pos, table.rowCount()-1);
-        if (op == nullptr)
+        if (op == nullptr)      //temporary hack TODO remove
             return result;
         BinaryOperation* curOperation = op->tryCastToBinary();
+        if (curOperation == nullptr)
+            return result;
         qDebug() << "Parser::evalExpression(): first term is: " << result.toString();
         qDebug() << "Parser::evalExpression(): current operation is: " << curOperation->notation();
         pos += curOperation->notation().size();
@@ -91,6 +93,8 @@ QVariant Parser::evalTerm(const QString& str, int & pos, int priority) const {
     }
     return result;
 }
+/*Problem in evalFactor(), don't work without unary operation before factor.
+ * Need to fix hackery and all gonna work well */
 
 QVariant Parser::evalFactor(const QString& str, int& pos) const {
     QVariant result;
@@ -107,9 +111,10 @@ QVariant Parser::evalFactor(const QString& str, int& pos) const {
         }
     } else {
         auto op = table.currentOperation(str, pos, 0);  //temporary hack TODO remove
-        if (!op)
-            return result;
-        curOperation = op->tryCastToUnary();
+        if (op == nullptr)
+            result = getFactor(str, pos);
+        else
+            curOperation = op->tryCastToUnary();
         if (curOperation) {
             pos += curOperation->notation().size();
             qDebug() << "Parser::evalFactor(): current unary operation is: " << curOperation->notation();
