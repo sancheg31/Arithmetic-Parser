@@ -110,13 +110,12 @@ QVariant Parser::evalFactor(const QString& str, int& pos) const {
         }
     } else {
         auto op = table.currentOperation(str, pos, 0);  //temporary hack TODO remove
-        if (op == nullptr)
-            result = getFactor(str, pos);
-        else
+        if (op != nullptr) {
             curOperation = op->tryCastToUnary();
-        if (curOperation) {
-            pos += curOperation->notation().size();
-            qDebug() << "Parser::evalFactor(): current unary operation is: " << curOperation->notation();
+            if (curOperation) {
+                pos += curOperation->notation().size();
+                qDebug() << "Parser::evalFactor(): current unary operation is: " << curOperation->notation();
+            }
         }
         if (str[pos] == '(') {
             qDebug() << "Parser::evalFactor(): open bracket found on 2" << pos << " position";
