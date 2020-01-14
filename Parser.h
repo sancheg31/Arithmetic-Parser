@@ -5,9 +5,10 @@
 #include "OperationPrecedenceTable.h"
 #include "IParserTemplateMethod.h"
 
+#include "Validator.h"
 class Parser: public IParserTemplateMethod {
 public:
-    Parser(const OperationPrecedenceTable& table, const QSet<QString>& functions);
+    Parser(const OperationPrecedenceTable& table, const QSet<QString>& functions, Validator*);
     virtual ~Parser() override;
 
     virtual QVariant parse(const QString&) const override;
@@ -22,6 +23,7 @@ protected:
 
     QVariant getFactor(const QString& str, int& pos) const;
 private:
+    Validator* validator;
     OperationPrecedenceTable table;
     QSet<QString> cellNames;
 

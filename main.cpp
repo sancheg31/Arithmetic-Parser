@@ -7,6 +7,9 @@
 #include "OperationContainer.h"
 #include "OperationPrecedenceTable.h"
 
+#include "Validator.h"
+#include "RegexValidator.h"
+
 #include "TesterWindow.h"
 
 OperationContainer createUnaryOperationsList(OperationFactory* factory) {
@@ -51,14 +54,21 @@ OperationPrecedenceTable createOperationTable() {
     return table;
 }
 
+Validator* createValidator() {
+    RegexValidator* regExpColumn = new RegexValidator(QRegExp(QString("[A-Za-z]{1,") + QString("1") + QString("}")));
+    RegexValidator* regExpRow = new RegexValidator(QRegExp(QString("[1-9][0-9]{0,") + QString("}")));
+    return new Validator({regExpRow, regExpColumn});
+}
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     QString str = "=(++(++7)+(--6)*++12)";
     auto table = createOperationTable();
-    Parser parser(table, QSet<QString>{});
-    QVariant value = parser.parse(str);
-    TesterWindow* window = new TesterWindow(new Parser(table, QSet<QString>{}));
+    auto validator = createValidator();
+    Parser *parser = new Parser(table, QSet<QString>{}, validator);
+    QVariant value = parser->parse(str);
+    TesterWindow* window = new TesterWindow(parser);
     window->show();
     qDebug() << "result is: " << ((value.type() == QVariant::Invalid) ? QString("####") : value.toString());
     return a.exec();
