@@ -22,6 +22,8 @@ public:
 protected:
     RegexValidator(const ValidatorContainer&);
 private:
+    bool matchesChildren(const Expression& expr) const;
+
     ValidatorContainer validators;
     QRegExp expression;
 };

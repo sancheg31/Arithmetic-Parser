@@ -1,7 +1,8 @@
 #pragma once
 
+#include <QString>
 
-class Expression
+class Expression: public QString
 {
 public:
 
