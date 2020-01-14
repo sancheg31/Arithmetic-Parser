@@ -2,9 +2,14 @@
 
 #include <QString>
 
-class Expression: public QString
+class Expression
 {
 public:
+    virtual QString toString() const {
+        return expression;
+    }
 
+private:
+    QString expression;
 };
 

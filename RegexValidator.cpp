@@ -14,7 +14,7 @@ RegexValidator &RegexValidator::operator=(const RegexValidator& ob) {
 }
 
 bool RegexValidator::isValid(const Expression &expr) const {
-    if (expression.exactMatch(expr) && areChildrenValid(expr))
+    if (expression.exactMatch(expr.toString()) && areChildrenValid(expr))
         return true;
     return false;
 }
