@@ -19,11 +19,15 @@ public:
 
 private slots:
     void parseFormClicked();
+    void clearClicked();
 
 private:
     void displayResult(QVariant);
 
+    bool resultIsDouble(QVariant result) const;
+
     const int MAX_DIGIT_COUNT = 16;
+    const QString DEFAULT_VALUE = QString::number(0);
     Ui::TesterWindow *ui;
     IParserTemplateMethod* parser;
 

@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -72,22 +72,6 @@
  </widget>
  <resources/>
  <connections>
-  <connection>
-   <sender>clearForm</sender>
-   <signal>clicked()</signal>
-   <receiver>form</receiver>
-   <slot>clear()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>523</x>
-     <y>88</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>418</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>pushButton</sender>
    <signal>clicked()</signal>
