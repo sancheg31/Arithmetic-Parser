@@ -27,6 +27,7 @@ SOURCES += \
         TesterWindow.cpp \
         UnaryOperation.cpp \
         Validator.cpp \
+        ValidatorContainer.cpp \
         main.cpp
 
 # Default rules for deployment.
@@ -46,7 +47,8 @@ HEADERS += \
     RegexValidator.h \
     TesterWindow.h \
     UnaryOperation.h \
-    Validator.h
+    Validator.h \
+    ValidatorContainer.h
 
 FORMS += \
     TesterWindow.ui
