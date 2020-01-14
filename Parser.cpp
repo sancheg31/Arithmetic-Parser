@@ -2,6 +2,9 @@
 
 #include <QDebug>
 
+#include "RegexValidator.h"
+#include "Validator.h"
+
 Parser::Parser(const OperationPrecedenceTable& t, const QSet<QString>& cell): table(t), cellNames(cell) { }
 
 Parser::~Parser() { }
@@ -22,10 +25,14 @@ QVariant Parser::parse(const QString & str) const {
     return result;
 }
 
+//junk TODO delete
+//regExpColumn->isValid(column) && regExpRow->isValid(row)
+
 QVariant Parser::getFactor(const QString &str, int &pos) const {
     QVariant result = 0.0;
-    QRegExp regExpColumn(QString("[A-Za-z]{1,") + QString("1") + QString("}"));
-    QRegExp regExpRow(QString("[1-9][0-9]{0,") + QString("}"));
+    RegexValidator* regExpColumn = new RegexValidator(QRegExp(QString("[A-Za-z]{1,") + QString("1") + QString("}")));
+    RegexValidator* regExpRow = new RegexValidator(QRegExp(QString("[1-9][0-9]{0,") + QString("}")));
+    Validator* validator = new Validator({regExpRow, regExpColumn});
     QString column;
     while (pos < str.size() && str[pos].isLetter()) {
         column += str[pos];
@@ -41,7 +48,7 @@ QVariant Parser::getFactor(const QString &str, int &pos) const {
     if (ok)
         qDebug() << "Parser::getFactor(): factor found " << result;
     if (!ok) {
-        if (regExpColumn.exactMatch(column) && regExpRow.exactMatch(row)) {
+        if (validator->isValid(column) && validator->isValid(row)) {
                 //Get Cell Value From TableWidget!!!!!!!!!!!!!!!!!!
         } else {
             result = QVariant{};

@@ -33,9 +33,9 @@ Validator *Validator::clone() const {
 
 bool Validator::areChildrenValid(const Expression &expr) const {
     for (auto & val: children)
-        if (!val->isValid(expr))
-            return false;
-    return true;
+        if (val->isValid(expr))
+            return true;
+    return false;
 }
 
 Validator::Validator(const ValidatorContainer & cont) {
