@@ -9,11 +9,18 @@
 
 class OperationContainer
 {
+protected:
+    using container_type = QHash<QString, OperationProxy*>;
+
+private:
+    using key_type = QString;
+    using mapped_type = OperationProxy*;
+
 public:
 
-    using value_type = OperationProxy*;
-    using iterator = QHash<QString, value_type>::iterator;
-    using const_iterator = QHash<QString, value_type>::const_iterator;
+    using value_type = mapped_type;
+    using iterator = container_type::iterator;
+    using const_iterator = container_type::const_iterator;
 
 
     OperationContainer();
@@ -22,16 +29,16 @@ public:
     OperationContainer& operator=(const OperationContainer&);
 
     iterator insert(value_type);
-    int remove(const QString&);
-    iterator find(const QString&);
+    int remove(const key_type&);
+    iterator find(const key_type&);
 
     QList<value_type> toSortedList() const;
-    bool contains(const QString&) const;
+    bool contains(const key_type&) const;
     int size() const;
     bool isEmpty() const;
 
-    value_type operator[](const QString&) const;
-    value_type operator[](const QString&);
+    value_type operator[](const key_type&) const;
+    value_type operator[](const key_type&);
 
     iterator begin();
     const_iterator begin() const;
@@ -43,7 +50,7 @@ public:
 
 private:
     QList<value_type> createList() const;
-    QHash<QString, value_type> oper;
+    container_type oper;
 };
 
 

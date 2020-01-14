@@ -24,7 +24,7 @@ auto OperationContainer::insert(value_type op) -> iterator {
     return oper.insert(op->notation(), op->clone());
 }
 
-auto OperationContainer::find(const QString& str) -> iterator {
+auto OperationContainer::find(const key_type& str) -> iterator {
     return oper.find(str);
 }
 
@@ -36,11 +36,11 @@ auto OperationContainer::toSortedList() const -> QList<value_type> {
     return list;
 }
 
-int OperationContainer::remove(const QString& str) {
+int OperationContainer::remove(const key_type& str) {
     return oper.remove(str);
 }
 
-bool OperationContainer::contains(const QString& str) const {
+bool OperationContainer::contains(const key_type& str) const {
     return oper.contains(str);
 }
 
@@ -52,11 +52,11 @@ bool OperationContainer::isEmpty() const {
     return oper.isEmpty();
 }
 
-auto OperationContainer::operator[](const QString& s) const -> value_type {
+auto OperationContainer::operator[](const key_type& s) const -> value_type {
     return oper[s];
 }
 
-auto OperationContainer::operator[](const QString& s) -> value_type {
+auto OperationContainer::operator[](const key_type& s) -> value_type {
     return oper[s];
 }
 
