@@ -16,7 +16,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         BinaryOperation.cpp \
-        ExpressionValidator.cpp \
         IParserTemplateMethod.cpp \
         Operation.cpp \
         OperationContainer.cpp \
@@ -24,8 +23,10 @@ SOURCES += \
         OperationPrecedenceTable.cpp \
         OperationProxy.cpp \
         Parser.cpp \
+        RegexValidator.cpp \
         TesterWindow.cpp \
         UnaryOperation.cpp \
+        Validator.cpp \
         main.cpp
 
 # Default rules for deployment.
@@ -35,7 +36,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     BinaryOperation.h \
-    ExpressionValidator.h \
     IParserTemplateMethod.h \
     Operation.h \
     OperationContainer.h \
@@ -43,8 +43,10 @@ HEADERS += \
     OperationPrecedenceTable.h \
     OperationProxy.h \
     Parser.h \
+    RegexValidator.h \
     TesterWindow.h \
-    UnaryOperation.h
+    UnaryOperation.h \
+    Validator.h
 
 FORMS += \
     TesterWindow.ui

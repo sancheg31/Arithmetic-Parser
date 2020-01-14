@@ -8,12 +8,10 @@ class Validator;
 class ValidatorContainer;
 class Expression;
 
-class ExpressionValidator
+class Validator
 {
 public:
-
     virtual bool isValid(const Expression&) const = 0;
-    virtual ~ExpressionValidator();
-
+    virtual ~Validator() { }
 };
 
