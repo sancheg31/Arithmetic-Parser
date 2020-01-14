@@ -16,7 +16,7 @@ public:
 
     ValidatorContainer();
     ValidatorContainer(const ValidatorContainer&);
-    ValidatorContainer(std::initializer_list<value_type>& list);
+    ValidatorContainer(const std::initializer_list<value_type>& list);
     ValidatorContainer& operator=(const ValidatorContainer&);
 
     iterator insert(value_type);

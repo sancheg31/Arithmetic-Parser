@@ -14,7 +14,7 @@ void ValidatorContainer::copyContainer(const container_type& cont) {
        validators.push_back(it->clone());
 }
 
-ValidatorContainer::ValidatorContainer(std::initializer_list<value_type>& list) {
+ValidatorContainer::ValidatorContainer(const std::initializer_list<value_type>& list) {
     for (const auto & it: list)
        validators.push_back(it->clone());
 }

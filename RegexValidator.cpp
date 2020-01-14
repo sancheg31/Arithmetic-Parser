@@ -1,43 +1,29 @@
 #include "RegexValidator.h"
 
-RegexValidator::RegexValidator(QRegExp expr): expression(expr) { }
+RegexValidator::RegexValidator(QRegExp expr): Validator(), expression(expr) { }
 
-RegexValidator::RegexValidator(Validator* v) { validators.insert(v); }
+RegexValidator::RegexValidator(Validator* v): Validator(v) { }
 
-RegexValidator::RegexValidator(std::initializer_list<Validator *> &list) {
-    validators = ValidatorContainer(list);
-}
+RegexValidator::RegexValidator(const std::initializer_list<Validator *> &list): Validator(list) { }
 
-RegexValidator::RegexValidator(const RegexValidator &ob) {
-    validators = ValidatorContainer(ob.validators);
-}
+RegexValidator::RegexValidator(const RegexValidator &ob): Validator(ob.children), expression(ob.expression) { }
 
 RegexValidator &RegexValidator::operator=(const RegexValidator& ob) {
-    validators = ob.validators;
+    children = ob.children;
     return *this;
 }
 
 bool RegexValidator::isValid(const Expression &expr) const {
-    if (expression.exactMatch(expr) && matchesChildren(expr))
+    if (expression.exactMatch(expr) && areChildrenValid(expr))
         return true;
     return false;
 }
 
-bool RegexValidator::matchesChildren(const Expression &expr) const {
-    for (auto & val: validators)
-        if (!val->isValid(expr))
-            return false;
-    return true;
-}
-
 Validator *RegexValidator::clone() const {
-    return new RegexValidator(validators);
+    return new RegexValidator(expression, children);
 }
 
-RegexValidator::RegexValidator(const ValidatorContainer& ob) {
-    for (Validator* val: ob)
-        validators.insert(val->clone());
-}
+RegexValidator::RegexValidator(QRegExp expr, const ValidatorContainer& cont): Validator(cont), expression(expr) { }
 
 
 

@@ -10,20 +10,22 @@
 class Validator
 {
 public:
-    virtual bool isValid(const Expression&) const = 0;
+    Validator() { }
+    explicit Validator(Validator* v);
+    Validator(const std::initializer_list<Validator*>& list);
+    Validator(const Validator& ob);
+    Validator& operator=(const Validator& ob);
 
-    virtual void addValidator(Validator *v) {
-        validators.insert(v);
-    }
+    virtual bool isValid(const Expression&) const;
+    virtual void addValidator(Validator *v);
+    virtual int removeValidator(Validator *v);
 
-    virtual int removeValidator(Validator *v) {
-        return validators.remove(v);
-    }
+    virtual Validator* clone() const;
 
-    virtual Validator* clone() const = 0;
-
-    virtual ~Validator() { }
+    virtual ~Validator();
 protected:
-    ValidatorContainer validators;
+    virtual bool areChildrenValid(const Expression& expr) const;
+    Validator(const ValidatorContainer&);
+    ValidatorContainer children;
 };
 
