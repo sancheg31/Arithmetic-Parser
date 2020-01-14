@@ -16,15 +16,10 @@ public:
     virtual bool isValid(const Expression& expr) const override;
     virtual Validator* clone() const override;
 
-    virtual void addValidator(Validator *v) override;
-    virtual int removeValidator(Validator *v) override;
-
 protected:
     RegexValidator(const ValidatorContainer&);
 private:
     bool matchesChildren(const Expression& expr) const;
-
-    ValidatorContainer validators;
     QRegExp expression;
 };
 

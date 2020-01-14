@@ -4,9 +4,13 @@ RegexValidator::RegexValidator(QRegExp expr): expression(expr) { }
 
 RegexValidator::RegexValidator(Validator* v) { validators.insert(v); }
 
-RegexValidator::RegexValidator(std::initializer_list<Validator *> &list): validators(list) { }
+RegexValidator::RegexValidator(std::initializer_list<Validator *> &list) {
+    validators = ValidatorContainer(list);
+}
 
-RegexValidator::RegexValidator(const RegexValidator &ob): validators(ob.validators) { }
+RegexValidator::RegexValidator(const RegexValidator &ob) {
+    validators = ValidatorContainer(ob.validators);
+}
 
 RegexValidator &RegexValidator::operator=(const RegexValidator& ob) {
     validators = ob.validators;
@@ -35,13 +39,7 @@ RegexValidator::RegexValidator(const ValidatorContainer& ob) {
         validators.insert(val->clone());
 }
 
-void RegexValidator::addValidator(Validator *v) {
-    validators.insert(v);
-}
 
-int RegexValidator::removeValidator(Validator *v) {
-    return validators.remove(v);
-}
 
 
 

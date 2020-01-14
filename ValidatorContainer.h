@@ -2,7 +2,7 @@
 
 #include <QVector>
 
-#include "Validator.h"
+class Validator;
 
 class ValidatorContainer
 {
