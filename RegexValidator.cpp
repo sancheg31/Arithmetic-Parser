@@ -1,20 +1,35 @@
 #include "RegexValidator.h"
 
+RegexValidator::RegexValidator(QRegExp expr): expression(expr) { }
+
+RegexValidator::RegexValidator(Validator* v) { validators.insert(v); }
+
+RegexValidator::RegexValidator(std::initializer_list<Validator *> &list): validators(list) { }
+
+RegexValidator::RegexValidator(const RegexValidator &ob): validators(ob.validators) { }
+
+RegexValidator &RegexValidator::operator=(const RegexValidator& ob) {
+    validators = ob.validators;
+    return *this;
+}
+
 bool RegexValidator::isValid(const Expression &expr) const {
-
+    return true;
 }
 
-void RegexValidator::addValidator(Validator *validator)
-{
-
+Validator *RegexValidator::clone() const {
+    return new RegexValidator(validators);
 }
 
-Validator *RegexValidator::removeValidator(Validator *validator)
-{
-
+void RegexValidator::addValidator(Validator *v) {
+    validators.insert(v);
 }
 
-Validator *RegexValidator::clone() const
-{
+int RegexValidator::removeValidator(Validator *v) {
+    return validators.remove(v);
+}
 
+RegexValidator::RegexValidator(const ValidatorContainer& ob) {
+    for (Validator* val: ob)
+        validators.insert(val->clone());
 }
